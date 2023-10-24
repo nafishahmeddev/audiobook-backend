@@ -3,6 +3,8 @@ import conn from "../conn";
 import { Album, IAlbum } from "./Album";
 import slugify from "slugify";
 import { List } from "./List";
+import { Author } from "./Author";
+import { Genre } from "./Genre";
 
 export interface ITrack {
   title: string,
@@ -16,7 +18,8 @@ export interface ITrack {
   authors: mongoose.ObjectId[],
   genres: mongoose.ObjectId[],
   lists: mongoose.ObjectId[],
-  album: mongoose.ObjectId | IAlbum
+  album: mongoose.ObjectId | IAlbum,
+  position: number
 }
 
 export interface ITrackModel extends ITrack, Document {
@@ -33,13 +36,14 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
     thumbnail: String,
     audio: String,
     duration: Number,
-    authors: [mongoose.Types.ObjectId],
-    genres: [mongoose.Types.ObjectId],
+    authors: { type: [mongoose.Types.ObjectId], ref: Author },
+    genres: { type: [mongoose.Types.ObjectId], ref: Genre },
     lists: { type: [mongoose.Types.ObjectId], ref: List },
     album: {
       type: mongoose.Types.ObjectId,
       ref: Album
-    }
+    },
+    position: Number
   },
   {
     timestamps: true,
