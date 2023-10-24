@@ -12,6 +12,8 @@ router.post("/", async (req: any, res: any) => {
         .populate("genres")
         .populate("lists");
 
+    track?.generateUrls();
+
     return res.status(200).json(ResponseHelper.success({
         code: 200,
         message: "Successful",
