@@ -11,7 +11,7 @@ export interface IAlbum {
   excerpt: string,
   description: string,
   slug: string
-  language : string,
+  language: string,
   totalTracks: number,
   thumbnail: string,
   duration: string,
@@ -23,7 +23,8 @@ export interface IAlbum {
 
 export interface IAlbumModel extends IAlbum, Document {
   // You can add custom methods or fields specific to the model here if needed
-  generateSlug(): Promise<string>
+  generateSlug(): Promise<string>,
+  generateUrls(): Promise<IAlbumModel>
 }
 
 const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
@@ -31,26 +32,30 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     title: String,
     excerpt: String,
     description: String,
-    slug: {type: String, unique: true},
-    language : String,
+    slug: { type: String, unique: true },
+    language: String,
     totalTracks: Number,
     thumbnail: String,
     duration: Number,
-    authors: {type: [mongoose.Types.ObjectId], ref: Author},
-    genres: {type: [mongoose.Types.ObjectId], ref: Genre},
-    lists: {type: [mongoose.Types.ObjectId], ref: List},
-    type:{type: String, enum: Object.values(ALBUM_TYPE_ENUM)}
+    authors: { type: [mongoose.Types.ObjectId], ref: Author },
+    genres: { type: [mongoose.Types.ObjectId], ref: Genre },
+    lists: { type: [mongoose.Types.ObjectId], ref: List },
+    type: { type: String, enum: Object.values(ALBUM_TYPE_ENUM) }
   },
   {
     timestamps: true,
     // You can define any custom methods or other configurations here if needed
     methods: {
-      generateSlug: async function (){
-        let slug : string = slugify(this.title);
-        const count = await Album.countDocuments({slug: new RegExp(slug, "i")});
-        if(count > 0) slug = slug+"-"+count;
+      generateSlug: async function () {
+        let slug: string = slugify(this.title);
+        const count = await Album.countDocuments({ slug: new RegExp(slug, "i") });
+        if (count > 0) slug = slug + "-" + count;
         this.slug = slug.toLowerCase();
         return slug;
+      },
+      generateUrls: function () {
+        this.thumbnail = this.thumbnail ? process.env.PUBLIC_URL + this.thumbnail : "";
+        return this;
       }
     }
   }
