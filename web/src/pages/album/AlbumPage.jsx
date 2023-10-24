@@ -1,39 +1,36 @@
 import {
-    Typography, Box, TextField, Stack, Button, Card,
-    MenuItem, Grid, Container, Avatar
+    Box, TextField, Stack, Button,
+    Grid, Switch
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import * as ProvisionTemplateService from "@app/services/admin/settings/provision-template/ProvisionTemplateServices";
+import * as BooksServices from "@app/services/admin/books/BooksServices";
 import { useSnackbar } from 'notistack';
 import FormDialog from "./components/form.dialog";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 import { useNavigate } from "react-router-dom";
 
 
-import SubCard from '@app/themes/ui-component/cards/SubCard';
 import MainCard from '@app/themes/ui-component/cards/MainCard';
-import SecondaryAction from '@app/themes/ui-component/cards/CardSecondaryAction';
 import Country from "@app/assets/Countries.js";
-import CountriesImage from "@app/assets/CountriesImage.js";
+import LanguageData from "@app/assets/LanguageData.js";
 
-function ProvisionTemplatePage() {
+function AlbumPage() {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
-    const [templateCount, setTemplateCount] = useState(0);
-    const [templateLimit, setTemplateLimit] = useState(20);
-    const [templatePage, setTemplatePage] = useState(0);
-    const [templateLoading, setTemplateLoading] = useState(false);
-    const [templates, setTemplates] = useState([]);
-    const [countries, setCountries] = useState([]);
+
+    const [booksCount, setBooksCount] = useState(0);
+    const [booksLimit, setBooksLimit] = useState(20);
+    const [booksPage, setBooksPage] = useState(0);
+    const [booksLoading, setBooksLoading] = useState(false);
+    const [books, setBooks] = useState([]);
 
     const [formDialog, setFormDialog] = useState({
         open: false,
@@ -43,38 +40,89 @@ function ProvisionTemplatePage() {
 
     const columns = [
         {
-            field: 'countryIso',
-            headerName: 'Country',
-            minWidth: 150,
-            flex: 1,
-            renderCell: ({ value, row }) => <Box sx={{display: "flex", alignItems: 'center'}}><Avatar
-                alt={value}
-                src={CountriesImage[value]}
-            />&nbsp;
-            ({value})
-            </Box>
-        },
-        {
-            field: 'name',
-            headerName: 'Name',
-            minWidth: 150,
-            align:'center',
-            headerAlign: 'center',
-            flex: 1,
-        },
-        {
-            field: 'percentage',
-            headerName: 'Percentage',
+            field: 'publisher',
+            headerName: 'Publisher',
             minWidth: 100,
-            align:'center',
-            headerAlign: 'center',
             flex: 1,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: ({ value }) => value?.name,
+        },
+        {
+            field: 'bookName',
+            headerName: 'Book Name',
+            minWidth: 200,
+            flex: 1,
+            align: 'left',
+            headerAlign: 'left',
+        },
+        {
+            field: 'author',
+            headerName: 'Author',
+            minWidth: 100,
+            flex: 1,
+            align: 'left',
+            headerAlign: 'left',
+            renderCell: ({ value }) => value?.name,
+        },
+        {
+            field: 'language',
+            headerName: 'Language',
+            minWidth: 50,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: ({ value }) => LanguageData[value ?? 'en'].name,
+        },
+        {
+            field: 'countryIso',
+            headerName: 'countries',
+            minWidth: 50,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: ({ value }) => value?.map(country => Country[country]),
+        },
+        {
+            field: 'releaseDate',
+            headerName: 'Release Date',
+            minWidth: 100,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+        },
+        {
+            field: 'category',
+            headerName: 'Category',
+            minWidth: 100,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: ({ value }) => value?.name,
+        },
+        {
+            field: 'isActive',
+            headerName: 'Active',
+            minWidth: 50,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: ({ value, row }) => <Switch defaultChecked={value} onChange={e => updateBook(row._id, { isActive: e.target.checked })} />,
+        },
+        {
+            field: 'audioBookType',
+            headerName: 'Audio Book Type',
+            minWidth: 50,
+            flex: 1,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: ({ value, row }) => value ?? "Book",
         },
         {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
-            width: 150,
+            width: 100,
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={<DeleteIcon />}
@@ -100,30 +148,21 @@ function ProvisionTemplatePage() {
             name: yup.string("Please enter order id"),
         }),
         onSubmit: (values) => {
-            fetchTemplate(values);
+            fetchPublisher(values);
         },
     });
 
-    const fetchTemplate = (filter = {}) => {
-        setTemplateLoading(true);
-        ProvisionTemplateService.all({ filter }, templatePage + 1, templateLimit).then(res => {
-            setTemplates(res.data.records);
-            setTemplateCount(res.data.count);
+    const fetchPublisher = (filter = {}) => {
+        setBooksLoading(true);
+        BooksServices.all({ filter }, booksPage + 1, booksLimit).then(res => {
+            console.log('the res data is ', res.data);
+            setBooks(res.data);
+            setBooksCount(res.data.count);
         }).catch(err => {
             console.error(err);
-            setTemplateLoading(false);
+            setBooksLoading(false);
         }).finally(() => {
-            setTemplateLoading(false);
-        });
-
-        CountryService.all({ filter }, countryPage + 1, countryLimit).then(res => {
-            setCountries(res.data.records);
-            setCountryList(res.data.countries);
-        }).catch(err => {
-            console.error(err);
-            setCountryLoading(false);
-        }).finally(() => {
-            setCountryLoading(false);
+            setBooksLoading(false);
         });
     }
 
@@ -141,11 +180,22 @@ function ProvisionTemplatePage() {
         })
     }
 
+    const addNewAlbum = () => {
+        navigate('/add-albums');
+    }
 
+    const updateBook = (_id, body) => {
+        BooksServices.update(_id, body).then((res) => {
+            enqueueSnackbar(res.message, { variant: "success" });
+            formik.handleSubmit();
+        }).catch(err => {
+            enqueueSnackbar(err.message, { variant: "error" });
+        })
+    }
 
     const handleDelete = (row = null) => {
         if (window.confirm("Are you sure?")) {
-            ProvisionTemplateService.destroy(row._id).then(res => {
+            BooksServices.destroy(row._id).then(res => {
                 enqueueSnackbar(res.message, { variant: "success" });
                 formik.handleSubmit();
             }).catch(err => {
@@ -158,10 +208,10 @@ function ProvisionTemplatePage() {
 
     useEffect(() => {
         handleSubmit();
-    }, [templateLimit, templatePage, handleSubmit]);
+    }, [booksLimit, booksPage, handleSubmit]);
 
     return (
-        <MainCard title="Unit Templates">
+        <MainCard title="Books">
             <Stack direction="column" alignItems="center" justifyContent="space-between" mb={5}>
                 <Box sx={{ width: '100%' }}>
                     <Box>
@@ -187,7 +237,7 @@ function ProvisionTemplatePage() {
                                 </Grid>
 
                                 <Grid item>
-                                    <Button color="secondary" variant="contained" type="button" size="small" onClick={() => { handleOpenFormDialog() }}>Add Provision Template</Button>
+                                    <Button color="secondary" variant="contained" type="button" size="small" onClick={() => { addNewAlbum() }}>New Album</Button>
                                 </Grid>
 
                             </Grid>
@@ -197,39 +247,38 @@ function ProvisionTemplatePage() {
                 </Box>
             </Stack>
 
-            <Box sx={{ height: '70vh' }}>
-            <DataGrid
-                rows={templates}
-                rowCount={templateCount}
-                loading={templateLoading}
-                checkboxSelection
-                rowsPerPageOptions={[20, 50, 100]}
-                pagination
-                page={templatePage}
-                pageSize={templateLimit}
-                paginationMode="server"
-                onPageChange={(page) => setTemplatePage(page)}
-                onPageSizeChange={pageSize => setTemplateLimit(pageSize)}
+            <Box>
+                <DataGrid
+                    rows={books ?? []}
+                    rowCount={booksCount}
+                    loading={booksLoading}
+                    checkboxSelection
+                    rowsPerPageOptions={[20, 50, 100]}
+                    pagination
+                    page={booksPage}
+                    pageSize={booksLimit}
+                    paginationMode="server"
+                    onPageChange={(page) => setBooksPage(page)}
+                    onPageSizeChange={pageSize => setBooksLimit(pageSize)}
 
-                columns={columns}
-                disableSelectionOnClick
-                autoHeight
-                getRowId={(record) => record._id}
-                getRowClassName={() => 'paxton-table--row'} 
-                getRowHeight={() => 50}
-                density="compact"
-                initialState={{
-                    pagination: {
-                        page: 1,
-                    },
-                }}
-            />
+                    columns={columns}
+                    disableSelectionOnClick
+                    autoHeight
+                    getRowId={(record) => record._id}
+                    getRowClassName={() => 'paxton-table--row'}
+                    getRowHeight={() => 50}
+                    density="compact"
+                    initialState={{
+                        pagination: {
+                            page: 1,
+                        },
+                    }}
+                />
             </Box>
 
 
             <FormDialog
                 {...formDialog}
-                countries={countries}
                 onClose={handleCloseFormDialog}
                 onConfirm={() => {
                     handleCloseFormDialog();
@@ -238,4 +287,4 @@ function ProvisionTemplatePage() {
         </MainCard>
     )
 }
-export default ProvisionTemplatePage;
+export default AlbumPage;

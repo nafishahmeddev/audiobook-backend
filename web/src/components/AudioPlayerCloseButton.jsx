@@ -2,10 +2,7 @@ import * as React from 'react';
 import Close from '@mui/icons-material/Close';
 import cx from 'classnames';
 
-import { createTheme } from '@mui/material/styles';
 import styled from '@emotion/styled';
-const theme = createTheme();
-
 export const useComponentStyles = styled({
   icon: (props) => ({
     color: props.playerColors.active,

@@ -6,6 +6,7 @@ export interface IList {
   name: string,
   thumbnail: string,
   icon: string,
+  position: string,
   slug: string
 }
 
@@ -18,15 +19,16 @@ const ListSchema: Schema<IListList> = new Schema<IListList>(
     name: String,
     thumbnail: String,
     icon: String,
-    slug: {type: String, unique: true},
+    position: String,
+    slug: { type: String, unique: true },
   },
   {
     timestamps: true,
     methods: {
-      generateSlug: async function (){
-        let slug : string = slugify(this.name);
-        const count = await List.countDocuments({slug: new RegExp(slug, "i")});
-        if(count > 0) slug = slug+"-"+count;
+      generateSlug: async function () {
+        let slug: string = slugify(this.name);
+        const count = await List.countDocuments({ slug: new RegExp(slug, "i") });
+        if (count > 0) slug = slug + "-" + count;
         this.slug = slug.toLowerCase();
         return slug;
       }

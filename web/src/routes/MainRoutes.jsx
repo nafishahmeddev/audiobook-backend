@@ -8,9 +8,8 @@ import Loadable from '@app/themes/ui-component/Loadable';
 const DashboardDefault = Loadable(lazy(() => import('../pages/dashboard')));
 
 // web routing
-const PublisherPage = Loadable(lazy(() => import('../pages/publishers/PublisherPage')));
-const BookPage = Loadable(lazy(() => import('../pages/books/BookPage')));
-const AddBookPage = Loadable(lazy(() => import('../pages/books/AddBookPage')));
+const AlbumPage = Loadable(lazy(() => import('../pages/album/AlbumPage')));
+const AddAlbumPage = Loadable(lazy(() => import('../pages/album/AddAlbumPage')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -32,16 +31,12 @@ const MainRoutes = {
       ]
     },
     {
-      path: 'publishers',
-      element: <PublisherPage />
+      path: 'albums',
+      element: <AlbumPage />
     },
     {
-      path: 'books',
-      element: <BookPage />
-    },
-    {
-      path: 'add-book',
-      element: <AddBookPage />
+      path: 'add-albums',
+      element: <AddAlbumPage />
     },
   ]
 };

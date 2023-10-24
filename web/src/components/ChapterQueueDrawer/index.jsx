@@ -1,4 +1,4 @@
-import { Button, Drawer, Box, List, IconButton } from "@mui/material"
+import { Button, Drawer, Box, IconButton } from "@mui/material"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import ChapterQueueItem from "./ChapterQueueItem";

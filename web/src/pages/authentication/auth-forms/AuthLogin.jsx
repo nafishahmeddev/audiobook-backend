@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -7,7 +6,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -17,8 +15,7 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography,
-  useMediaQuery
+  Typography
 } from '@mui/material';
 
 // third party
@@ -57,7 +54,7 @@ const AuthLogin = ({ ...others }) => {
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
-        
+
         <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign in with Email address</Typography>
@@ -78,14 +75,14 @@ const AuthLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             AuthService.login(values.email, values.password)
-            .then((res) => {
+              .then((res) => {
                 enqueueSnackbar(res.message, { variant: "success" });
                 AuthService.me();
-            }).catch((err) => {
+              }).catch((err) => {
                 enqueueSnackbar(err.message, { variant: "error" });
-            }).finally(() => {
-              setSubmitting(false);
-            })
+              }).finally(() => {
+                setSubmitting(false);
+              })
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {

@@ -1,8 +1,22 @@
 // assets
-import { IconDashboard, IconBooks, IconKey, IconBrandDouban, IconUsers, IconCreditCard } from '@tabler/icons';
+import {
+  IconDashboard,
+  IconBooks,
+  IconKey,
+  IconBrandDouban,
+  IconUsers,
+  IconCreditCard
+} from '@tabler/icons';
 
 // constant
-const icons = { IconDashboard, IconKey, IconBooks, IconBrandDouban, IconUsers, IconCreditCard };
+const icons = {
+  IconDashboard,
+  IconKey,
+  IconBooks,
+  IconBrandDouban,
+  IconUsers,
+  IconCreditCard
+};
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -20,62 +34,12 @@ const dashboard = {
       breadcrumbs: false
     },
     {
-      id: 'publisher',
-      title: 'Publisher',
+      id: 'albums',
+      title: 'Albums',
       type: 'item',
-      url: '/publishers',
-      icon: icons.IconBrandDouban,
-      breadcrumbs: false
-    },
-    {
-      id: 'books',
-      title: 'Books',
-      type: 'item',
-      url: '/books',
+      url: '/albums',
       icon: icons.IconBooks,
       breadcrumbs: false
-    },
-    {
-      id: 'users',
-      title: 'Users',
-      type: 'collapse',
-      icon: icons.IconUsers,
-      children: [
-        {
-          id: 'app_users',
-          title: 'App Users',
-          type: 'item',
-          url: '',
-        },
-        {
-          id: 'cms_users',
-          title: 'CMS Users',
-          type: 'item',
-          url: '',
-        }
-      ]
-    },
-    {
-      id: 'payment',
-      title: 'Payment',
-      type: 'collapse',
-      icon: icons.IconCreditCard,
-      children: [
-        {
-          id: 'inbound',
-          title: 'Inbound payment',
-          type: 'item',
-          url: '',
-          target: true
-        },
-        {
-          id: 'outbound',
-          title: 'Outbound payment',
-          type: 'item',
-          url: '',
-          target: true
-        }
-      ]
     }
   ]
 };

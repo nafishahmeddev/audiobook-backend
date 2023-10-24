@@ -2,25 +2,17 @@ import { useEffect, useState } from "react";
 import {
     Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField,
     DialogActions, TextareaAutosize, RadioGroup, FormControlLabel, FormLabel,
-    Box, Grid, IconButton, Typography, FormHelperText, Radio, Stack
+    Box, Grid, Radio, Stack
 } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import * as AuthorService from "@app/services/admin/settings/author/AuthorServices";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
-import { fontSize } from "@mui/system";
 import { styled } from '@mui/system';
 
 FormDialog.propTypes = {
@@ -94,28 +86,33 @@ function FormDialog({ open, row, onClose, onConfirm }) {
             name: "",
             file: "",
             picture: "",
-            sex: "",
+            gender: "",
             description: "",
+            dob: "",
+            dod: "",
+            slug: "",
         },
         validationSchema: yup.object({
             name: yup.string('Enter Name').required('Name is required'),
             picture: yup.string("Select To").required("Picture is required"),
-            sex: yup.string('Select Sex').required('Sex is required'),
+            gender: yup.string('Select gender').required('Gender is required'),
             description: yup.string('Enter Description').required('Description is required'),
+            dob: yup.string('Enter Date of Birth').required('Date of birth is required'),
+            slug: yup.string('Enter slug').required('slug is required'),
         }),
         onSubmit: (values) => {
             handleOnConfirm(values);
             alert(
                 JSON.stringify(
-                  { 
-                    fileName: values.file.name, 
-                    type: values.file.type,
-                    size: `${values.file.size} bytes`
-                  },
-                  null,
-                  2
+                    {
+                        fileName: values.file.name,
+                        type: values.file.type,
+                        size: `${values.file.size} bytes`
+                    },
+                    null,
+                    2
                 )
-              );
+            );
         },
     });
     const handleOnClose = () => {
@@ -150,6 +147,9 @@ function FormDialog({ open, row, onClose, onConfirm }) {
             picture: row?.picture ?? "",
             sex: row?.sex ?? "",
             description: row?.description ?? "",
+            dob: row?.dob ?? "",
+            dod: row?.dod ?? "",
+            slug: row?.slug ?? "",
         })
     }, [row, setValues]);
 
@@ -195,7 +195,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Stack direction="row" alignItems="center" spacing={2} sx={{mt: 3}}>
+                                <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 3 }}>
                                     <label htmlFor="file">
                                         <Button variant="contained" component="span">
                                             Upload Author Image
@@ -223,9 +223,9 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                                     aria-labelledby="sex"
                                     name="sex"
                                 >
-                                    <FormControlLabel value="female" control={<Radio />} onChange={e => handleSexChange(e)} label="Female" />
-                                    <FormControlLabel value="male" control={<Radio />} onChange={e => handleSexChange(e)} label="Male" />
-                                    <FormControlLabel value="other" control={<Radio />} onChange={e => handleSexChange(e)} label="Other" />
+                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
                                 </RadioGroup>
                             </Grid>
 
@@ -239,6 +239,57 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
                                     error={formik.touched.description && Boolean(formik.errors.description)}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="dob"
+                                    name="dob"
+                                    label="dob"
+                                    type="date"
+                                    fullWidth
+                                    variant="standard"
+                                    value={formik.values.dob}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.dob && Boolean(formik.errors.dob)}
+                                    helperText={formik.touched.dob && formik.errors.dob}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="dod"
+                                    name="dod"
+                                    label="dod"
+                                    type="date"
+                                    fullWidth
+                                    variant="standard"
+                                    value={formik.values.dod}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.dod && Boolean(formik.errors.dod)}
+                                    helperText={formik.touched.dod && formik.errors.dod}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="slug"
+                                    name="slug"
+                                    label="slug"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                    value={formik.values.slug}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.slug && Boolean(formik.errors.slug)}
+                                    helperText={formik.touched.slug && formik.errors.slug}
                                 />
                             </Grid>
 

@@ -13,12 +13,12 @@ import useDragging from './useDragging';
 import AudioPlayer from "@app/components/AudioPlayer";
 
 import {
-  Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Box, CardHeader,
-  MenuItem, Grid, Container, Avatar, Switch, Stack, FormControlLabel, Typography, Tab, Card,
-  IconButton, CardContent
+  TextField, CardHeader,
+  Grid, Card,
+  IconButton
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 const drawDescription = (

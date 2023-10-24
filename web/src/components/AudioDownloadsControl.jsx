@@ -7,9 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import CloudDownload from '@mui/icons-material/CloudDownload';
 import cx from 'classnames';
 
-import { createTheme } from '@mui/material/styles';
 import styled from '@emotion/styled';
-const theme = createTheme();
 
 const useComponentStyles = styled({
   commonContainer: {

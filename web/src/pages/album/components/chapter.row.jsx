@@ -1,33 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import {
-    Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField,
-    DialogActions, Stack, CardHeader, Card, CircularProgress,
-    Box, Grid, IconButton, Typography, FormHelperText,
+    Button, TextField,
+    CardHeader, Card,
+    Grid, IconButton,
 } from "@mui/material";
 
-import MenuItem from "@mui/material/MenuItem";
 
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useSnackbar } from 'notistack';
 
-import * as PublisherService from "@app/services/admin/publisher/PublisherServices";
-import CardContent from '@mui/material/CardContent';
 
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 
-import AudioPlayer from "@app/components/AudioPlayer";
 
-import { ChapterUploader } from "@app/components/DragDropFiles";
 import { useDispatch } from "react-redux";
 import UploaderService from "@app/services/admin/UploaderService";
 
-const fileTypes = ["MP3", "OGG", "WAV"];
 
 ChapterRow.propTypes = {
     chapterRows: PropTypes.array,
@@ -35,28 +24,7 @@ ChapterRow.propTypes = {
 
 
 function ChapterRow({ chapterRows }) {
-    const { enqueueSnackbar } = useSnackbar();
-    const reference = useRef();
-    const inputRef = useRef();
     const dispatch = useDispatch();
-    const getText = () => {
-        if (queue.isUploading) return "Uploading...";
-        if (queue.isFailed) return "Failed";
-        return "Pending";
-    }
-    const getColor = () => {
-        if (queue.isUploading) return "#0000ff";
-        if (queue.isFailed) return "#ff0000";
-        return "yellow";
-    }
-
-    const handleRetry = () => {
-        dispatch(ChapterQueuesActions.update({
-            ...queue,
-            isFailed: false,
-            retried: 2
-        }))
-    }
     //confirmation form
     const formik = useFormik({
         initialValues: [{
@@ -147,7 +115,7 @@ function ChapterRow({ chapterRows }) {
                                     <audio controls autoplay>
                                         <source src={URL.createObjectURL(chapter)} type={chapter.type} />
                                     </audio>
-                                    <Button onClick={()=>handleAdd(i)}>Upload</Button>
+                                    <Button onClick={() => handleAdd(i)}>Upload</Button>
                                 </>
                             }
                         />

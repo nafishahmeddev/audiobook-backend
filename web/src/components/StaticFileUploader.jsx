@@ -5,21 +5,24 @@ import {
   UploaderWrapper
 } from './style';
 import { acceptedExt, checkType, getFileSizeMB } from './utils';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import DrawTypes from './DrawTypes';
 import ImageAdd from './ImageAdd';
 import useDragging from './useDragging';
 import AudioPlayer from "@app/components/AudioPlayer";
 
+import PropTypes from 'prop-types';
 import {
-  Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Box, CardHeader,
-  MenuItem, Grid, Container, Avatar, Switch, Stack, FormControlLabel, Typography, Tab, Card,
-  IconButton, CardContent
+  TextField, CardHeader,
+  Grid, Card,
+  IconButton
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+
 
 const drawDescription = (
   currFile,
@@ -315,4 +318,32 @@ const StaticFileUploader = ({
     </>
   );
 };
+
+StaticFileUploader.propTypes = {
+  name: PropTypes.string,
+  hoverTitle: PropTypes.func,
+  types: PropTypes.func,
+  handleChange: PropTypes.func,
+  classes: PropTypes.func,
+  children: PropTypes.func,
+  maxSize: PropTypes.func,
+  minSize: PropTypes.func,
+  fileOrFiles: PropTypes.func,
+  onSizeError: PropTypes.func,
+  onTypeError: PropTypes.func,
+  onSelect: PropTypes.func,
+  onDrop: PropTypes.func,
+  disabled: PropTypes.func,
+  label: PropTypes.func,
+  multiple: PropTypes.func,
+  required: PropTypes.func,
+  onDraggingStateChange: PropTypes.func,
+  dropMessageStyle: PropTypes.func,
+  currFile: PropTypes.func,
+  uploaded: PropTypes.func,
+  typeError: PropTypes.func,
+  disabled: PropTypes.func,
+  label: PropTypes.func
+}
+
 export default StaticFileUploader;

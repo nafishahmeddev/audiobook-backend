@@ -7,7 +7,6 @@ import cx from 'classnames';
 import PLAYER from './state/player';
 import { createTheme } from '@mui/material/styles';
 import styled from '@emotion/styled';
-const theme = createTheme();
 
 export const useComponentStyles = styled({
   icon: (props) => ({

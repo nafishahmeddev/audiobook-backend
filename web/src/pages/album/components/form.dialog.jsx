@@ -2,23 +2,17 @@ import { useEffect, useState } from "react";
 import {
     Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField,
     DialogActions,
-    Box, Grid, IconButton, Typography, FormHelperText,
+    Box, Grid,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import * as PublisherService from "@app/services/admin/publisher/PublisherServices";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
 
 FormDialog.propTypes = {
@@ -26,13 +20,13 @@ FormDialog.propTypes = {
     row: PropTypes.object,
     onClose: PropTypes.func,
     onConfirm: PropTypes.func,
-  }
+}
 
 
 function FormDialog({ open, row, onClose, onConfirm }) {
     const { enqueueSnackbar } = useSnackbar();
-    const [banksName, setBanksName] = useState([]);
-    const [countries, setCountries] = useState([]);
+    const [banksName] = useState([]);
+    const [countries] = useState([]);
     //confirmation form
     const formik = useFormik({
         initialValues: {
@@ -66,7 +60,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
         onClose();
     }
     const handleOnConfirm = (values) => {
-        const country = countries.find(country => country.isoCode === values.country );
+        const country = countries.find(country => country.isoCode === values.country);
         values.currency = country.currency;
         let res = null;
         if (row) {
@@ -107,7 +101,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
     //         console.error(err);
     //     });
     // }
-    
+
     // useEffect(() => {
     //     initializeComponent();
     // }, []);
@@ -121,7 +115,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                 <FormikProvider value={formik}>
                     <DialogTitle display="flex" alignItems="center">
                         <Box flexGrow={1}>
-                        <span style={{fontSize: "18px"}}> {row ? "Update" : "Create"} Publisher </span>
+                            <span style={{ fontSize: "18px" }}> {row ? "Update" : "Create"} Publisher </span>
                         </Box>
                     </DialogTitle>
                     <DialogContent>
@@ -256,7 +250,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
 
                                 </TextField>
                             </Grid>
-                           
+
 
                             <Grid item xs={12}>
                                 <TextField

@@ -8,9 +8,7 @@ import cx from 'classnames';
 
 import PLAYER from './state/player';
 
-import { createTheme } from '@mui/material/styles';
 import styled from '@emotion/styled';
-const theme = createTheme();
 
 export const useComponentStyles = styled((theme) => {
   return {
@@ -81,13 +79,13 @@ export const AudioVolumeControl = ({
         <VolumeUpIcon
           fontSize="large"
           className={cx(classes.icon, classNames.volumeIcon)}
-          onClick={typeof muted !== 'boolean' ? muteAudio : () => {}}
+          onClick={typeof muted !== 'boolean' ? muteAudio : () => { }}
         />
       ) : (
         <VolumeOffIcon
           fontSize="large"
           className={cx(classes.icon, classNames.volumeIcon)}
-          onClick={typeof muted !== 'boolean' ? unmuteAudio : () => {}}
+          onClick={typeof muted !== 'boolean' ? unmuteAudio : () => { }}
         />
       )}
       {volumeSlider && (

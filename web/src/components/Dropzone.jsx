@@ -1,32 +1,32 @@
-import { Description, DescriptionWrapper,
-    HoverMsg, UploaderWrapper
-  } from './style';
+import {
+  Description
+} from './style';
 
-export default function Dropzone( currFile, uploaded, typeError, disabled, label){
-    return typeError ? (
-        <span>File type/size error, Hovered on types!</span>
-      ) : (
-        <Description>
-          {disabled ? (
-            <span>Chapter Adding disabled</span>
-          ) : !currFile && !uploaded ? (
+export default function Dropzone(currFile, uploaded, typeError, disabled, label) {
+  return typeError ? (
+    <span>File type/size error, Hovered on types!</span>
+  ) : (
+    <Description>
+      {disabled ? (
+        <span>Chapter Adding disabled</span>
+      ) : !currFile && !uploaded ? (
+        <>
+          {label ? (
             <>
-              {label ? (
-                <>
-                  <span>{label.split(' ')[0]}</span>{' '}
-                  {label.substr(label.indexOf(' ') + 1)}
-                </>
-              ) : (
-                <>
-                  <span>Add</span> or drop chapters right here
-                </>
-              )}
+              <span>{label.split(' ')[0]}</span>{' '}
+              {label.substr(label.indexOf(' ') + 1)}
             </>
           ) : (
             <>
-              <span>Chapters Added Successfully!</span><br /> Add another?
+              <span>Add</span> or drop chapters right here
             </>
           )}
-        </Description>
-      );
+        </>
+      ) : (
+        <>
+          <span>Chapters Added Successfully!</span><br /> Add another?
+        </>
+      )}
+    </Description>
+  );
 }

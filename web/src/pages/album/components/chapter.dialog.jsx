@@ -1,27 +1,19 @@
 import { useEffect, useState } from "react";
 import {
-    Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField,
-    DialogActions, Stack,
-    Box, Grid, IconButton, Typography, FormHelperText,
+    Button, Dialog, DialogTitle, DialogContent, DialogContentText,
+    DialogActions,
+    Box, Grid,
 } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import * as PublisherService from "@app/services/admin/publisher/PublisherServices";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import CheckIcon from "@mui/icons-material/Check";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from 'prop-types';
 
-import AudioPlayer from "@app/components/AudioPlayer";
 
 import { ChapterUploader } from "@app/components/DragDropFiles";
 
@@ -110,18 +102,6 @@ function ChapterDialog({ open, row, chaptersRow, onClose, onConfirm }) {
         })
     }, [row, setValues])
 
-    // const initializeComponent = async () => {
-    //     await PublisherService.all().then(res => {
-    //         setProvisionModels(res.data.records);
-    //     }).catch(err => {
-    //         console.error(err);
-    //     });
-    // }
-
-    // useEffect(() => {
-    //     initializeComponent();
-    // }, []);
-
     return (
         <>
             <Dialog open={open}
@@ -141,62 +121,10 @@ function ChapterDialog({ open, row, chaptersRow, onClose, onConfirm }) {
 
 
                         <Grid container spacing={2} rowSpacing={1}>
-                            {/* <Grid item xs={12}>
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="title"
-                                    name="title"
-                                    label="Title"
-                                    type="text"
-                                    fullWidth
-                                    variant="standard"
-                                    value={formik.values.title}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.title && Boolean(formik.errors.title)}
-                                    helperText={formik.touched.title && formik.errors.title}
-                                />
-                            </Grid> */}
 
                             <Grid item xs={12} sx={{ mt: 3 }}>
                                 <ChapterUploader handleChange={handleChange} handleAudioWithTitle={audioWithTitle} name="file" types={fileTypes} multiple={true} />
                             </Grid>
-
-                            {/* <Grid item xs={12}>
-                                <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 3 }}>
-                                    <span style={{ fontSize: "16px", marginLeft: "2%" }}> Chapters: </span>
-                                    <label htmlFor="file">
-                                        <Button variant="contained" component="span">
-                                            Chapter
-                                        </Button>
-                                        <input
-                                            id="file"
-                                            hidden
-                                            multiple
-                                            name="file"
-                                            accept="audio/*"
-                                            type="file"
-                                            onChange={(event) => {
-                                                audioPreview(event.currentTarget.files);
-                                            }}
-                                        />
-                                    </label>
-                                    {bookData &&
-                                        <AudioPlayer
-                                            elevation={1}
-                                            width="100%"
-                                            variation="default"
-                                            spacing={3}
-                                            download={true}
-                                            autoplay={true}
-                                            order="standard"
-                                            preload="auto"
-                                            loop={true}
-                                            tracks={track}
-                                        />
-                                    }
-                                </Stack>
-                            </Grid> */}
 
                         </Grid>
 

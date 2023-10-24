@@ -1,5 +1,4 @@
 import {
-  Description,
   DescriptionWrapper,
   HoverMsg,
   UploaderWrapper
@@ -10,17 +9,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import DrawTypes from './DrawTypes';
 import ImageAdd from './ImageAdd';
 import useDragging from './useDragging';
-import AudioPlayer from "@app/components/AudioPlayer";
 
-import {
-  TextField, CardHeader,
-  Grid, Card,
-  IconButton
-} from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import * as yup from 'yup';
 import Dropzone from './Dropzone';
-import ChapterQueueDrawer from './ChapterQueueDrawer';
 
 const ChapterUploader = ({
   name,

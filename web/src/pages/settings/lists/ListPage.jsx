@@ -1,6 +1,6 @@
 import {
-    Typography, Box, TextField, Stack, Button, Card,
-    MenuItem, Grid, Container, Avatar
+    Box, TextField, Stack, Button,
+    Grid
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { useEffect } from "react";
@@ -13,16 +13,11 @@ import FormDialog from "./components/form.dialog";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 import { useNavigate } from "react-router-dom";
 
 
-import SubCard from '@app/themes/ui-component/cards/SubCard';
 import MainCard from '@app/themes/ui-component/cards/MainCard';
-import SecondaryAction from '@app/themes/ui-component/cards/CardSecondaryAction';
-import Country from "@app/assets/Countries.js";
-import CountriesImage from "@app/assets/CountriesImage.js";
 
 function ListPage() {
     const { enqueueSnackbar } = useSnackbar();
@@ -46,14 +41,14 @@ function ListPage() {
             headerName: 'Upload Cover',
             minWidth: 100,
             flex: 1,
-            align:'left',
+            align: 'left',
             headerAlign: 'left',
         },
         {
             field: 'name',
             headerName: 'List',
             minWidth: 100,
-            align:'center',
+            align: 'center',
             headerAlign: 'center',
             flex: 1,
         },
@@ -61,7 +56,7 @@ function ListPage() {
             field: 'position',
             headerName: 'Position',
             minWidth: 150,
-            align:'center',
+            align: 'center',
             headerAlign: 'center',
             flex: 1,
         },
@@ -188,32 +183,32 @@ function ListPage() {
             </Stack>
 
             <Box sx={{ height: '70vh' }}>
-            <DataGrid
-                rows={unitTemplates}
-                rowCount={unitTemplateCount}
-                loading={unitTemplateLoading}
-                checkboxSelection
-                rowsPerPageOptions={[20, 50, 100]}
-                pagination
-                page={unitTemplatePage}
-                pageSize={unitTemplateLimit}
-                paginationMode="server"
-                onPageChange={(page) => setUnitTemplatePage(page)}
-                onPageSizeChange={pageSize => setUnitTemplateLimit(pageSize)}
+                <DataGrid
+                    rows={unitTemplates}
+                    rowCount={unitTemplateCount}
+                    loading={unitTemplateLoading}
+                    checkboxSelection
+                    rowsPerPageOptions={[20, 50, 100]}
+                    pagination
+                    page={unitTemplatePage}
+                    pageSize={unitTemplateLimit}
+                    paginationMode="server"
+                    onPageChange={(page) => setUnitTemplatePage(page)}
+                    onPageSizeChange={pageSize => setUnitTemplateLimit(pageSize)}
 
-                columns={columns}
-                disableSelectionOnClick
-                autoHeight
-                getRowId={(record) => record._id}
-                getRowClassName={() => 'paxton-table--row'} 
-                getRowHeight={() => 50}
-                density="compact"
-                initialState={{
-                    pagination: {
-                        page: 1,
-                    },
-                }}
-            />
+                    columns={columns}
+                    disableSelectionOnClick
+                    autoHeight
+                    getRowId={(record) => record._id}
+                    getRowClassName={() => 'paxton-table--row'}
+                    getRowHeight={() => 50}
+                    density="compact"
+                    initialState={{
+                        pagination: {
+                            page: 1,
+                        },
+                    }}
+                />
             </Box>
 
 
