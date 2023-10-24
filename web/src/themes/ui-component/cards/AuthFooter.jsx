@@ -6,10 +6,10 @@ import { Link, Typography, Stack } from '@mui/material';
 const AuthFooter = () => (
   <Stack direction="row" justifyContent="space-between">
     <Typography variant="subtitle2" component={Link} href="https://haaki.app" target="_blank" underline="hover">
-      haaki.app
+      audiobook.app
     </Typography>
     <Typography variant="subtitle2" component={Link} href="https://haaki.com" target="_blank" underline="hover">
-      &copy; haaki.com
+      &copy; audiobook.com
     </Typography>
   </Stack>
 );

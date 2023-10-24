@@ -11,7 +11,7 @@ const icons = {
 const payment = {
   id: 'payment',
   title: 'Payment',
-  caption: 'haaki payment',
+  caption: 'Payment',
   type: 'group',
   children: [
     {

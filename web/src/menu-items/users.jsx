@@ -11,7 +11,7 @@ const icons = {
 const users = {
   id: 'users',
   title: 'Users',
-  caption: 'haaki users',
+  caption: 'Users',
   type: 'group',
   children: [
     {

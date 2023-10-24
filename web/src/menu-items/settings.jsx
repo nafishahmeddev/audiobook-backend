@@ -11,7 +11,7 @@ const icons = {
 const settings = {
   id: 'settings',
   title: 'Settings',
-  caption: 'haaki settings',
+  caption: 'Settings',
   type: 'group',
   children: [
     {
