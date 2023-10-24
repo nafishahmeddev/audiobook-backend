@@ -1,7 +1,7 @@
-import { Track } from "db/default";
+import { Track } from "../../../db/default";
 import { Router } from "express";
-import PaginateHelper from "helpers/PaginateHelper";
-import ResponseHelper from "helpers/ResponseHelper";
+import PaginateHelper from "../../../helpers/PaginateHelper";
+import ResponseHelper from "../../../helpers/ResponseHelper";
 import multer from "multer";
 import fs from "fs";
 import Ffmpeg from "fluent-ffmpeg";

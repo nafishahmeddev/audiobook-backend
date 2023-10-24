@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { Album, Track } from "db/default";
-import ResponseHelper from "helpers/ResponseHelper";
+import { Album, Track } from "../../../db/default";
+import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });
 

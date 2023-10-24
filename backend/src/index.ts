@@ -3,7 +3,7 @@ import BodyParser from "body-parser";
 import cors from "cors";
 import dotenv from 'dotenv';
 import path from "path";
-dotenv.config();
+dotenv.config({ path: __dirname + "/../.env" });
 import { initConnection } from './db/base/conn';
 import ErrorHandler from './middleware/ErrorHandler';
 
