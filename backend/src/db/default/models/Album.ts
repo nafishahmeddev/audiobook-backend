@@ -22,8 +22,6 @@ export interface IAlbum {
 }
 
 export interface IAlbumModel extends IAlbum, Document {
-  // You can add custom methods or fields specific to the model here if needed
-  generateSlug(): Promise<string>,
   generateUrls(): Promise<IAlbumModel>
 }
 
@@ -46,13 +44,6 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     timestamps: true,
     // You can define any custom methods or other configurations here if needed
     methods: {
-      generateSlug: async function () {
-        let slug: string = slugify(this.title);
-        const count = await Album.countDocuments({ slug: new RegExp(slug, "i") });
-        if (count > 0) slug = slug + "-" + count;
-        this.slug = slug.toLowerCase();
-        return slug;
-      },
       generateUrls: function () {
         this.thumbnail = this.thumbnail ? process.env.PUBLIC_URL + this.thumbnail : "";
         return this;
@@ -60,5 +51,14 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     }
   }
 );
+
+AlbumSchema.pre("save", async function () {
+  if (!this.slug) {
+    let slug: string = slugify(this.title);
+    const count = await Album.countDocuments({ slug: new RegExp(slug, "i") });
+    if (count > 0) slug = slug + "-" + count;
+    this.slug = slug.toLowerCase();
+  }
+})
 
 export const Album: Model<IAlbumModel> = conn.model<IAlbumModel>("Album", AlbumSchema);

@@ -26,8 +26,6 @@ router.post("/", async (req: any, res: any) => {
 
 router.put("/", upload.single("thumbnail"), async (req: any, res: any) => {
     const genre = new Genre({ ...req.body });
-    await genre.generateSlug();
-
     if (req.file) {
         const extension = req.file.originalname.split('.').pop();;
         const filepath = `${process.env.ASSETS_PATH}/public/images/${genre.slug}-${Date.now()}.${extension}`;

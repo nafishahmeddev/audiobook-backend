@@ -12,7 +12,6 @@ export interface IAuthor {
 }
 
 export interface IAuthorAuthor extends IAuthor, Document {
-  generateSlug(): Promise<string>
 }
 
 const AuthorSchema: Schema<IAuthorAuthor> = new Schema<IAuthorAuthor>(
@@ -20,22 +19,26 @@ const AuthorSchema: Schema<IAuthorAuthor> = new Schema<IAuthorAuthor>(
     firstName: String,
     lastName: String,
     image: String,
-    slug: {type: String, unique: true},
+    slug: { type: String, unique: true },
     dob: Date,
     dod: Date,
   },
   {
     timestamps: true,
     methods: {
-      generateSlug: async function (){
-        let slug : string = slugify(this.firstName+" "+this.lastName);
-        const count = await Author.countDocuments({slug: new RegExp(slug, "i")});
-        if(count > 0) slug = slug+"-"+count;
-        this.slug = slug.toLowerCase();
-        return slug;
-      }
+
     }
   }
 );
+
+AuthorSchema.pre("save", async function () {
+  if (!this.slug) {
+    let slug: string = slugify(this.firstName + " " + this.lastName);
+    const count = await Author.countDocuments({ slug: new RegExp(slug, "i") });
+    if (count > 0) slug = slug + "-" + count;
+    this.slug = slug.toLowerCase();
+  }
+})
+
 
 export const Author: Model<IAuthorAuthor> = conn.model<IAuthorAuthor>("Author", AuthorSchema);

@@ -20,8 +20,6 @@ export interface ITrack {
 }
 
 export interface ITrackModel extends ITrack, Document {
-  // You can add custom methods or fields specific to the model here if needed
-  generateSlug(): Promise<string>,
   generateUrls(): Promise<ITrackModel>
 }
 
@@ -47,13 +45,6 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
     timestamps: true,
     // You can define any custom methods or other configurations here if needed
     methods: {
-      generateSlug: async function () {
-        let slug: string = slugify(this.title);
-        const count = await Track.countDocuments({ slug: new RegExp(slug, "i") });
-        if (count > 0) slug = slug + "-" + count;
-        this.slug = slug.toLowerCase();
-        return slug;
-      },
       generateUrls: function () {
         this.thumbnail = this.thumbnail ? process.env.PUBLIC_URL + this.thumbnail : "";
         this.audio = this.audio ? process.env.PUBLIC_URL + this.audio : "";
@@ -62,5 +53,14 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
     },
   }
 );
+
+TrackSchema.pre("save", async function () {
+  if (!this.slug) {
+    let slug: string = slugify(this.title);
+    const count = await Track.countDocuments({ slug: new RegExp(slug, "i") });
+    if (count > 0) slug = slug + "-" + count;
+    this.slug = slug.toLowerCase();
+  }
+})
 
 export const Track: Model<ITrackModel> = conn.model<ITrackModel>("Track", TrackSchema);
