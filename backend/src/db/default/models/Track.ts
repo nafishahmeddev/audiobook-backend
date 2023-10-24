@@ -5,7 +5,7 @@ import slugify from "slugify";
 import { List } from "./List";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
-import { TRACK_TYPE_ENUM } from "enums/album";
+import { TRACK_TYPE_ENUM } from "../../../enums/album";
 
 export interface ITrack {
   title: string,
