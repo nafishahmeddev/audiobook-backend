@@ -30,8 +30,6 @@ router.put("/", upload.fields([
     { name: "audio", maxCount: 1, },
 ]), async (req: any, res: any) => {
     const track = new Track({ ...req.body });
-    await track.generateSlug();
-
 
     const thumbnail = req.files?.thumbnail?.[0];
     const audio = req.files?.audio?.[0];

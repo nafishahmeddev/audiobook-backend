@@ -11,7 +11,7 @@ export interface IList {
 }
 
 export interface IListList extends IList, Document {
-  generateSlug(): Promise<string>
+
 }
 
 const ListSchema: Schema<IListList> = new Schema<IListList>(
@@ -25,15 +25,18 @@ const ListSchema: Schema<IListList> = new Schema<IListList>(
   {
     timestamps: true,
     methods: {
-      generateSlug: async function () {
-        let slug: string = slugify(this.name);
-        const count = await List.countDocuments({ slug: new RegExp(slug, "i") });
-        if (count > 0) slug = slug + "-" + count;
-        this.slug = slug.toLowerCase();
-        return slug;
-      }
+
     }
   }
 );
+
+ListSchema.pre("save", async function () {
+  if (!this.slug) {
+    let slug: string = slugify(this.name);
+    const count = await List.countDocuments({ slug: new RegExp(slug, "i") });
+    if (count > 0) slug = slug + "-" + count;
+    this.slug = slug.toLowerCase();
+  }
+})
 
 export const List: Model<IListList> = conn.model<IListList>("List", ListSchema);

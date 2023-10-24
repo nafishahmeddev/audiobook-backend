@@ -10,28 +10,31 @@ export interface IGenre {
 }
 
 export interface IGenreGenre extends IGenre, Document {
-  generateSlug(): Promise<string>
+
 }
 
 const GenreSchema: Schema<IGenreGenre> = new Schema<IGenreGenre>(
   {
     name: String,
-    slug: {type: String, unique: true},
+    slug: { type: String, unique: true },
     thumbnail: String,
     icon: String,
   },
   {
     timestamps: true,
     methods: {
-      generateSlug: async function (){
-        let slug : string = slugify(this.name);
-        const count = await Genre.countDocuments({slug: new RegExp(slug, "i")});
-        if(count > 0) slug = slug+"-"+count;
-        this.slug = slug.toLowerCase();
-        return slug;
-      }
+
     }
   }
 );
+
+GenreSchema.pre("save", async function () {
+  if (!this.slug) {
+    let slug: string = slugify(this.name);
+    const count = await Genre.countDocuments({ slug: new RegExp(slug, "i") });
+    if (count > 0) slug = slug + "-" + count;
+    this.slug = slug.toLowerCase();
+  }
+})
 
 export const Genre: Model<IGenreGenre> = conn.model<IGenreGenre>("Genre", GenreSchema);

@@ -26,8 +26,6 @@ router.post("/", async (req: any, res: any) => {
 
 router.put("/", upload.single("thumbnail"), async (req: any, res: any) => {
     const list = new List({ ...req.body });
-    await list.generateSlug();
-
     if (req.file) {
         const extension = req.file.originalname.split('.').pop();;
         const filepath = `${process.env.ASSETS_PATH}/public/images/${list.slug}-${Date.now()}.${extension}`;
