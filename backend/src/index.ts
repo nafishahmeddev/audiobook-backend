@@ -2,6 +2,7 @@ import express, { Express, Request, Response, Application } from 'express';
 import BodyParser from "body-parser";
 import cors from "cors";
 import dotenv from 'dotenv';
+import path from "path";
 dotenv.config();
 import { initConnection } from './db/base/conn';
 import ErrorHandler from './middleware/ErrorHandler';
@@ -25,6 +26,7 @@ async function boot() {
 
 boot().then(() => {
   app.use(ErrorHandler);
+  app.use("/public", express.static(path.join(process.env.ASSETS_PATH || "", "public")));
   app.listen(port, () => {
     console.log(`Server is Fire at http://localhost:${port}`);
   });
