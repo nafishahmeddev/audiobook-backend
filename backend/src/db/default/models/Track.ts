@@ -5,6 +5,7 @@ import slugify from "slugify";
 import { List } from "./List";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
+import { TRACK_TYPE_ENUM } from "enums/album";
 
 export interface ITrack {
   title: string,
@@ -19,7 +20,8 @@ export interface ITrack {
   genres: mongoose.ObjectId[],
   lists: mongoose.ObjectId[],
   album: mongoose.ObjectId | IAlbum,
-  position: number
+  position: number,
+  type: "EPISODE" | "CHAPTER" | "SONG"
 }
 
 export interface ITrackModel extends ITrack, Document {
@@ -43,7 +45,8 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
       type: mongoose.Types.ObjectId,
       ref: Album
     },
-    position: Number
+    position: Number,
+    type: { type: String, enum: Object.values(TRACK_TYPE_ENUM) }
   },
   {
     timestamps: true,

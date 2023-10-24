@@ -1,7 +1,7 @@
 export const ALBUM_TYPE_ENUM = {
     BOOK: "BOOK",
     PODCAST: "PODCAST",
-    SONGS: "SONGS"
+    ALBUM: "ALBUM"
 }
 
 export const TRACK_TYPE_ENUM = {

@@ -18,7 +18,7 @@ export interface IAlbum {
   authors: mongoose.ObjectId[],
   genres: mongoose.ObjectId[],
   lists: mongoose.ObjectId[],
-  type: "BOOK" | "PODCAST" | "SONGS"
+  type: "BOOK" | "PODCAST" | "ALBUM"
 }
 
 export interface IAlbumModel extends IAlbum, Document {
