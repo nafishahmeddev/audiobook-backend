@@ -18,3 +18,16 @@
 !.env.example
 /web/vite.config.js.timestamp-*
 /web/vite.config.ts.timestamp-*
+
+
+/frontend/.DS_Store
+/frontend/node_modules
+/frontend/build
+/frontend/dist
+/frontend/.svelte-kit
+/frontend/package
+/frontend/.env
+/frontend/.env.*
+!.env.example
+/frontend/vite.config.js.timestamp-*
+/frontend/vite.config.ts.timestamp-*

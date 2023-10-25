@@ -2,9 +2,11 @@ import path from "path";
 import fs from "fs";
 import { Application, Router, IRouter, RequestHandler } from "express";
 import { printTable } from "console-table-printer";
+import { payloadDebugger } from "middleware/PayloadDebugger";
 const router = Router({
     mergeParams: true
 });
+router.use(payloadDebugger);
 const basePath = path.join(__dirname, "pages");
 const baseEndpoint = "/api/v1";
 const registered: { Path: string, Auth?: boolean }[] = [];

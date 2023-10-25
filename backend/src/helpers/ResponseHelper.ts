@@ -1,13 +1,13 @@
-export default class ResponseHelper{
-    static success(options : {
+export default class ResponseHelper {
+    static success(options: {
         payload?: any,
-         code?: string | number,
-         message?: string
-    }){
+        code?: string | number,
+        message?: string
+    }) {
         return {
             success: true,
-            code: options.code? options.code.toString() : undefined,
-            payload: options.payload,
+            successCode: options.code ? options.code.toString() : undefined,
+            result: options.payload,
             message: options.message
         }
     }
@@ -16,11 +16,11 @@ export default class ResponseHelper{
         payload?: any,
         code?: string | number,
         message?: string
-    }){
+    }) {
         return {
             success: false,
-            code: options.code? options.code.toString() : undefined,
-            payload: options.payload,
+            errorCode: options.code ? options.code.toString() : undefined,
+            result: options.payload,
             message: options.message
         }
     }
