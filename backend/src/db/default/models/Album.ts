@@ -22,7 +22,7 @@ export interface IAlbum {
 }
 
 export interface IAlbumModel extends IAlbum, Document {
-  generateUrls(): Promise<IAlbumModel>
+  generateUrls(): IAlbumModel
 }
 
 const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(

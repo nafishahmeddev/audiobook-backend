@@ -71,8 +71,8 @@ router.patch("/generate", async (req: any, res: any) => {
     for (let n = 0; n < 6; n++) {
         const album: any = new Album({
             title: faker.company.buzzAdjective(),
-            excerpt: String,
-            description: String,
+            excerpt: faker.lorem.sentence(),
+            description: faker.lorem.sentence(),
             language: "en",
             duration: Math.ceil(Math.random() * 100000),
             authors: await Author.aggregate([{ $sample: { size: 1 } }]),
@@ -89,8 +89,8 @@ router.patch("/generate", async (req: any, res: any) => {
     for (let n = 0; n < 100; n++) {
         const track: any = new Track({
             title: faker.company.buzzAdjective(),
-            excerpt: String,
-            description: String,
+            excerpt: faker.lorem.sentence(),
+            description: faker.lorem.sentence(),
             language: "en",
             duration: Math.ceil(Math.random() * 100000),
             authors: await Author.aggregate([{ $sample: { size: 2 } }]),
@@ -103,8 +103,9 @@ router.patch("/generate", async (req: any, res: any) => {
         await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
         track.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
 
+        const sourcepath = `${process.env.PROJECT_PATH}/test.mp3`;
         const audiopath = `${process.env.ASSETS_PATH}/public/audios/track-${track._id.toString()}-${Date.now()}.mp3`;
-        await download("https://downloadthequran.com/wp-content/uploads/2017/05/001-al-fatihah.mp3", audiopath)
+        fs.cpSync(sourcepath, audiopath);
         track.audio = audiopath.replace(process.env.ASSETS_PATH ?? "", "");
         await track.save();
     }

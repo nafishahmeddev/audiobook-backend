@@ -25,7 +25,7 @@ export interface ITrack {
 }
 
 export interface ITrackModel extends ITrack, Document {
-  generateUrls(): Promise<ITrackModel>
+  generateUrls(): ITrackModel
 }
 
 const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(

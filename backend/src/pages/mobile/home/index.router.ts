@@ -17,8 +17,8 @@ router.get("/", async (req: any, res: any) => {
         message: "Cool",
         payload: {
             trending: {
-                albums: albums.map(album => album.generateUrls()),
-                tracks: tracks.map(track => track.generateUrls()),
+                albums: albums.map(album => album.generateUrls().toJSON()),
+                tracks: tracks.map(track => track.generateUrls().toJSON()),
             }
         }
     }));
