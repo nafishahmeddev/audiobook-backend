@@ -35,9 +35,9 @@ router.get("/", async (req: any, res: any) => {
         code: 200,
         message: "Cool",
         payload: {
-            lists: lists.map(list => ({ ...list.toJSON(), thumbnail: baseUrl(list.thumbnail) })),
-            genres: genres.map(genre => ({ ...genre.toJSON(), thumbnail: baseUrl(genre.thumbnail) })),
-            authors: authors.map(author => ({ ...author.toJSON(), image: baseUrl(author.image) })),
+            lists: lists.map(list => ({ ...list, thumbnail: baseUrl(list.thumbnail) })),
+            genres: genres.map(genre => ({ ...genre, thumbnail: baseUrl(genre.thumbnail) })),
+            authors: authors.map(author => ({ ...author, image: baseUrl(author.image) })),
             albums: albums.map(album => ({ ...album, thumbnail: baseUrl(album.thumbnail) })),
             tracks: tracks.map(track => ({ ...track, thumbnail: baseUrl(track.thumbnail), audio: baseUrl(track.audio) })),
         }
