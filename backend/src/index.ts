@@ -5,8 +5,6 @@ import dotenv from 'dotenv';
 import path from "path";
 dotenv.config({ path: __dirname + "/../.env" });
 import { initConnection } from './db/base/conn';
-import ErrorHandler from './middleware/ErrorHandler';
-
 const app: Application = express();
 const port = process.env.PORT || 8000;
 app.use(cors({

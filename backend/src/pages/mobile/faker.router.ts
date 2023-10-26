@@ -4,8 +4,7 @@ import ResponseHelper from "../../helpers/ResponseHelper";
 import { faker } from '@faker-js/faker';
 import axios from "axios";
 import fs from "fs";
-import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "enums/album";
-import mongoose from "mongoose";
+import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
 
 
 const router = Router({ mergeParams: true });

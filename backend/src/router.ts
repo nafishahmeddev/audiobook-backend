@@ -1,8 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { Application, Router, IRouter, RequestHandler } from "express";
-import { printTable } from "console-table-printer";
-import { payloadDebugger } from "middleware/PayloadDebugger";
+import { payloadDebugger } from "./middleware/PayloadDebugger";
 const router = Router({
     mergeParams: true
 });
