@@ -8,18 +8,6 @@ import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
 
 
 const router = Router({ mergeParams: true });
-// async function download(url: string, outPath: string): Promise<any> {
-//     return await axios({
-//         method: "get",
-//         url: url,
-//         responseType: "stream",
-//     }).then(function (response) {
-//         return response.data.pipe(fs.createWriteStream(outPath));
-//     }).catch(err => console.error("Error"))
-// }
-
-
-
 function art(): string {
     const arts = fs.readdirSync(process.env.PROJECT_PATH + "/dummy/cover");
     return process.env.PROJECT_PATH + "/dummy/cover" + "/" + arts[Math.floor(Math.random() * arts.length)];
