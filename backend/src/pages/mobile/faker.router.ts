@@ -47,9 +47,9 @@ router.patch("/generate", async (req: any, res: any) => {
 
     for (let n = 0; n < 6; n++) {
         const genre = await Genre.findOne({
-            name: faker.music.genre,
+            name: faker.music.genre(),
         }) ?? new Genre({
-            name: faker.music.genre,
+            name: faker.music.genre(),
         });
 
         const filepath = `${process.env.ASSETS_PATH}/public/images/genre-${genre._id.toString()}-${Date.now()}.jpg`;
