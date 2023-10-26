@@ -22,14 +22,69 @@ router.get("/", async (req: any, res: any) => {
     ])
     const tracks = await Track.aggregate([
         { $sample: { size: 10 } },
-        { $limit: 10 },
         { $sort: { createdAt: -1 } },
-        { $lookup: { from: "albums", localField: "album", foreignField: "_id", as: "album" } },
-        { $unwind: '$album' },
-        { $lookup: { from: "authors", localField: "authors", foreignField: "_id", as: "authors" } },
-        { $lookup: { from: "genres", localField: "genres", foreignField: "_id", as: "genres" } },
-        { $lookup: { from: "lists", localField: "lists", foreignField: "_id", as: "lists" } },
-    ])
+        { $limit: 10 },
+        {
+            $lookup: {
+                from: "authors",
+                localField: "authors",
+                foreignField: "_id",
+                as: "authors"
+            }
+        },
+        {
+            $lookup: {
+                from: "genres",
+                localField: "genres",
+                foreignField: "_id",
+                as: "genres"
+            }
+        },
+        {
+            $lookup: {
+                from: "lists",
+                localField: "lists",
+                foreignField: "_id",
+                as: "lists"
+            }
+        },
+        {
+            $lookup: {
+                from: "albums",
+                localField: "album",
+                foreignField: "_id",
+                as: "album"
+            }
+        },
+        {
+            $unwind: "$album"
+        },
+        {
+            $lookup: {
+                from: "authors",
+                localField: "album.authors",
+                foreignField: "_id",
+                as: "album.authors"
+            }
+        },
+        {
+            $lookup: {
+                from: "genres",
+                localField: "album.genres",
+                foreignField: "_id",
+                as: "album.genres"
+            }
+        },
+        {
+            $lookup: {
+                from: "lists",
+                localField: "album.lists",
+                foreignField: "_id",
+                as: "album.lists"
+            }
+        }
+    ]);
+
 
     return res.status(200).json(ResponseHelper.success({
         code: 200,
