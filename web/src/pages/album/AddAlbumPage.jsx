@@ -1,5 +1,5 @@
 import {
-    Button, TextField, Box,
+    Button, TextField, Box, Select, FormControl, InputLabel,
     MenuItem, Grid, Stack, Typography, Tab
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,6 +98,7 @@ function AddAlbumPage({ row }) {
     const dispatch = useDispatch();
     const [controller, setController] = useState(new AbortController());
     const [isUploading, setIsUploading] = useState(null);
+    const [thumbnailImage, setThumbnailImage] = useState();
 
     const handleChange = (file) => {
         setFile(file);
@@ -138,14 +139,15 @@ function AddAlbumPage({ row }) {
             slug: yup.string("Enter slug").required("slug is required"),
             language: yup.string("Select language").required("language is required"),
             totalTracks: yup.string("Enter Total Tracks").required("Total Tracks is required"),
-            thumbnail: yup.string("Select thumbnail").required("thumbnail is required"),
+            // thumbnail: yup.string("Select thumbnail").required("thumbnail is required"),
             duration: yup.string("Select duration").required("duration is required"),
-            authors: yup.string("Select Authors").required("Authors is required"),
+            authors: yup.array().of(yup.string("Select Authors").required("Authors is required")),
             genres: yup.string("Select genres").required("genres is required"),
             lists: yup.string("Select Lists").required("Lists is required"),
             type: yup.string("Select type").required("type is required"),
         }),
         onSubmit: (values) => {
+            console.log('the values are ', values);
             addBook(values);
         },
     });
@@ -196,7 +198,7 @@ function AddAlbumPage({ row }) {
         console.log(file);
         console.log(booksLoading);
         AuthorServices.getAll().then(res => {
-            setAuthorList(res.data.records);
+            setAuthorList(res.result.authors);
         }).catch(err => {
             console.error(err);
             setBooksLoading(false);
@@ -315,7 +317,7 @@ function AddAlbumPage({ row }) {
                                 <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
                                     <Tab label="Book Basic Info" {...a11yProps(0)} />
                                     <Tab label="Book General Info" {...a11yProps(1)} />
-                                    <Tab label="Chapters" {...a11yProps(2)} />
+                                    {/* <Tab label="Chapters" {...a11yProps(2)} /> */}
                                 </Tabs>
                             </Box>
                             <CustomTabPanel value={value} index={0}>
@@ -324,24 +326,6 @@ function AddAlbumPage({ row }) {
                                 </Box>
                                 <Grid container spacing={4} rowSpacing={0.1}>
                                     <Grid item xs={6}>
-                                        <TextField
-                                            label="AudioBook Type"
-                                            margin="dense"
-                                            variant="standard"
-                                            name="type"
-                                            fullWidth
-                                            select
-                                            onChange={formik.handleChange}
-                                            value={formik.values.type}
-                                            error={formik.touched.type && Boolean(formik.errors.type)}
-                                            helperText={formik.touched.type && formik.errors.type}>
-                                            <MenuItem value="1" key="book">Book</MenuItem>
-                                            <MenuItem value="2" key="podcast">Podcast</MenuItem>
-                                            <MenuItem value="2" key="song">Song</MenuItem>
-                                        </TextField>
-                                    </Grid>
-
-                                    <Grid item xs={12}>
                                         <TextField
                                             margin="dense"
                                             id="title"
@@ -360,24 +344,78 @@ function AddAlbumPage({ row }) {
 
                                     <Grid item xs={6}>
                                         <TextField
-                                            label="Author"
+                                            label="AudioBook Type"
                                             margin="dense"
                                             variant="standard"
-                                            name="author"
+                                            name="type"
                                             fullWidth
                                             select
                                             onChange={formik.handleChange}
-                                            value={formik.values.author}
-                                            error={formik.touched.author && Boolean(formik.errors.author)}
-                                            helperText={formik.touched.author && formik.errors.author}>
-                                            <MenuItem value=""></MenuItem>
-                                            {authorList.map(author => (
-                                                <MenuItem value={author._id} key={`author-item-${author._id}`}>
-                                                    {author.name}
-                                                </MenuItem>
-                                            ))}
-
+                                            value={formik.values.type}
+                                            error={formik.touched.type && Boolean(formik.errors.type)}
+                                            helperText={formik.touched.type && formik.errors.type}>
+                                            <MenuItem value="BOOK" key="book">Book</MenuItem>
+                                            <MenuItem value="PODCAST" key="podcast">Podcast</MenuItem>
+                                            <MenuItem value="ALBUM" key="album">Album</MenuItem>
                                         </TextField>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="totalTracks"
+                                            name="totalTracks"
+                                            label="Total Tracks"
+                                            type="number"
+                                            fullWidth
+                                            variant="standard"
+                                            value={formik.values.totalTracks}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.totalTracks && Boolean(formik.errors.totalTracks)}
+                                            helperText={formik.touched.totalTracks && formik.errors.totalTracks}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="duration"
+                                            name="duration"
+                                            label="Duration"
+                                            type="number"
+                                            fullWidth
+                                            variant="standard"
+                                            value={formik.values.duration}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.duration && Boolean(formik.errors.duration)}
+                                            helperText={formik.touched.duration && formik.errors.duration}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+                                        <FormControl fullWidth variant="outlined" margin="normal">
+                                            <InputLabel id="author">Author</InputLabel>
+                                            <Select
+                                                labelId="authors"
+                                                id="authors"
+                                                multiple
+                                                label="Author"
+                                                value={formik.values.authors}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                inputProps={{
+                                                    name: 'authors',
+                                                    id: 'id',
+                                                }}
+                                                renderValue={(selected) => (authorList?.find((item) => item._id === selected[0])?.firstName)}
+                                            >
+                                                {authorList.map((author) => (
+                                                    <MenuItem key={`author-item-${author._id}`} value={author._id}>
+                                                        {author.firstName}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </Grid>
 
                                     <Grid item xs={6}>
@@ -405,22 +443,23 @@ function AddAlbumPage({ row }) {
                                     <Grid item xs={6}>
                                         <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 3 }}>
                                             <span style={{ fontSize: "16px", marginLeft: "2%" }}>  Upload Book Cover: </span>
-                                            <label htmlFor="bookCover">
+                                            <label htmlFor="thumbnail">
                                                 <Button variant="contained" component="span">
-                                                    Upload Book Cover
+                                                    Upload Album Cover
                                                 </Button>
                                                 <input
-                                                    id="bookCover"
+                                                    id="thumbnail"
                                                     hidden
-                                                    name="bookCover"
+                                                    name="thumbnail"
                                                     accept="image/*"
                                                     type="file"
                                                     onChange={(event) => {
-                                                        formik.setFieldValue('bookCover', event.currentTarget.files[0]);
+                                                        setThumbnailImage(URL.createObjectURL(event.target.files[0]));
+                                                        formik.setFieldValue('thumbnail', event.currentTarget.files[0]);
                                                     }}
                                                 />
                                             </label>
-                                            {formik.values.bookCover && <img src={formik.values.bookCover} alt="Author Image" height="300" />}
+                                            {thumbnailImage && <img src={thumbnailImage} alt="Thumbnail Image" height="300" />}
                                         </Stack>
                                     </Grid>
 
@@ -453,14 +492,17 @@ function AddAlbumPage({ row }) {
                                             value={formik.values.lists}
                                             error={formik.touched.lists && Boolean(formik.errors.lists)}
                                             helperText={formik.touched.lists && formik.errors.lists}>
-                                            <MenuItem value=""></MenuItem>
-                                            {lists.map(list => (
+                                            <MenuItem value="65395adac23fd7cadf2a11e4" key="book-list">Book</MenuItem>
+                                            <MenuItem value="65395adac23fd7cadf2a12e4" key="podcast-list">Podcast</MenuItem>
+                                            <MenuItem value="65395adac23fd7cadf2a13e4" key="song-list">Song</MenuItem>
+                                            {/* {lists.map(list => (
                                                 <MenuItem value={list._id} key={`country-item-${list._id}`}>
                                                     {list.name}
                                                 </MenuItem>
-                                            ))}
+                                            ))} */}
 
                                         </TextField>
+
                                     </Grid>
 
                                     <Grid item xs={12}>
@@ -476,12 +518,14 @@ function AddAlbumPage({ row }) {
                                             value={formik.values.tags}
                                             error={formik.touched.tags && Boolean(formik.errors.tags)}
                                             helperText={formik.touched.tags && formik.errors.tags}>
-                                            <MenuItem value=""></MenuItem>
-                                            {tagList.map(tag => (
+                                            <MenuItem value="65395adac23fd7cadf3a1ee4" key="new-list">New</MenuItem>
+                                            <MenuItem value="65395adac23fd7cadf4a1ee4" key="old-list">Old</MenuItem>
+                                            <MenuItem value="65395adac23fd7cadf1a1ee4" key="latest-list">Latest</MenuItem>
+                                            {/* {tagList.map(tag => (
                                                 <MenuItem value={tag._id} key={`tag-item-${tag._id}`}>
                                                     {tag.name}
                                                 </MenuItem>
-                                            ))}
+                                            ))} */}
 
                                         </TextField>
                                     </Grid>
@@ -498,26 +542,84 @@ function AddAlbumPage({ row }) {
                                             value={formik.values.genres}
                                             error={formik.touched.genres && Boolean(formik.errors.genres)}
                                             helperText={formik.touched.genres && formik.errors.genres}>
-                                            <MenuItem value=""></MenuItem>
-                                            {genreList.map(genre => (
+                                            <MenuItem value="65395adac21fd7cadf2a1ee4" key="pick-list">Pick</MenuItem>
+                                            <MenuItem value="65395adac22fd7cadf2a1ee4" key="up-list">Up</MenuItem>
+                                            <MenuItem value="65395adac24fd7cadf2a1ee4" key="this-list">THis</MenuItem>
+                                            {/* {genreList.map(genre => (
                                                 <MenuItem value={genre._id} key={`genre-item-${genre._id}`}>
                                                     {genre.name}
                                                 </MenuItem>
-                                            ))}
+                                            ))} */}
 
                                         </TextField>
                                     </Grid>
 
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="excerpt"
+                                            name="excerpt"
+                                            label="Excerpt"
+                                            type="text"
+                                            fullWidth
+                                            multiline
+                                            rows={2}
+                                            maxRows={4}
+                                            variant="outlined"
+                                            value={formik.values.excerpt}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.excerpt && Boolean(formik.errors.excerpt)}
+                                            helperText={formik.touched.excerpt && formik.errors.excerpt}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="description"
+                                            name="description"
+                                            label="Description"
+                                            type="text"
+                                            fullWidth
+                                            multiline
+                                            rows={2}
+                                            maxRows={4}
+                                            variant="outlined"
+                                            value={formik.values.description}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.description && Boolean(formik.errors.description)}
+                                            helperText={formik.touched.description && formik.errors.description}
+                                        />
+                                    </Grid>
+
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            margin="dense"
+                                            id="slug"
+                                            name="slug"
+                                            label="Slug"
+                                            type="text"
+                                            fullWidth
+                                            variant="standard"
+                                            value={formik.values.slug}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.slug && Boolean(formik.errors.slug)}
+                                            helperText={formik.touched.slug && formik.errors.slug}
+                                        />
+                                    </Grid>
 
                                 </Grid>
                                 <Box mb={3} mt={3} display={"flex"} gap={2} flexDirection={"row-reverse"}>
-                                    <Button onClick={() => handleTabChange("submit", 2)} color="success" variant="contained">Next</Button>
+                                    <Button type="submit" color="success" variant="contained">Save</Button>
                                     <Button onClick={() => handleReset()} color="warning" variant="contained">Reset</Button>
                                     <Button onClick={() => handleTabChange("previous", 0)} color="info" variant="contained">Previous</Button>
                                 </Box>
                             </CustomTabPanel>
-                            <CustomTabPanel value={value} index={2}>
-                                {/* Chapters uploading form */}
+
+                            {/* Chapters uploading form */}
+
+                            {/* <CustomTabPanel value={value} index={2}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
                                     <CloudUploadIcon /><span style={{ fontSize: "16px", marginLeft: "2%" }}> Upload Chapters Here... </span>
                                 </Box>
@@ -526,7 +628,6 @@ function AddAlbumPage({ row }) {
                                     <Grid item xs={12}>
                                         <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 3 }}>
                                             <span style={{ fontSize: "16px", marginLeft: "2%" }}> Chapters: </span>
-                                            {/* <label htmlFor="chapters"> */}
                                             {chapterRows &&
                                                 <ChapterRow chapterRows={chapterRows} />
                                             }
@@ -552,7 +653,8 @@ function AddAlbumPage({ row }) {
 
                                     </Grid>
                                 </Grid>
-                            </CustomTabPanel>
+                            </CustomTabPanel> */}
+
                         </Box>
 
                     </Grid>

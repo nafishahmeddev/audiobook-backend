@@ -1,24 +1,22 @@
 import Request from "@app/lib/request";
-const request = new Request("/admin/settings/authors");
-
+const request = new Request("/admin/authors");
 
 export const all = (data, page, limit) => {
-    return request.http.post(`/?page=${page}&limit=${limit}`, data);
-}
+  return request.http.post(`/?page=${page}&limit=${limit}`, data);
+};
 
 export const getAll = () => {
-    return request.http.get(`/`);
-}
+  return request.http.post(`/`);
+};
 
-export const create = (data) =>{
-    return request.http.put(`/`, data);
-}
+export const create = (data) => {
+  return request.http.put(`/`, data);
+};
 
-export const update = (_id, data) =>{
-    return request.http.put(`/${_id}`, data);
-}
+export const update = (_id, data) => {
+  return request.http.put(`/${_id}`, data);
+};
 
-export const destroy = (_id) =>{
-    return request.http.delete(`/${_id}`);
-}
-
+export const destroy = (_id) => {
+  return request.http.delete(`/${_id}`);
+};

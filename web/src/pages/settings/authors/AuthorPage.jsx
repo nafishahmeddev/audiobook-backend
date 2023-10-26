@@ -37,8 +37,8 @@ function AuthorsPage() {
 
     const columns = [
         {
-            field: 'picture',
-            headerName: 'Picture',
+            field: 'image',
+            headerName: 'Image',
             minWidth: 100,
             flex: 1,
             align: 'left',
@@ -49,7 +49,7 @@ function AuthorsPage() {
             />
         },
         {
-            field: 'name',
+            field: 'firstName',
             headerName: 'Name',
             minWidth: 150,
             align: 'center',
@@ -57,21 +57,13 @@ function AuthorsPage() {
             flex: 1,
         },
         {
-            field: 'sex',
-            headerName: 'Sex',
+            field: 'gender',
+            headerName: 'Gender',
             minWidth: 100,
             align: 'center',
             headerAlign: 'center',
             flex: 1,
             renderCell: ({ value, row }) => value?.charAt(0)?.toUpperCase() + value?.slice(1)
-        },
-        {
-            field: 'rating',
-            headerName: 'Rating',
-            minWidth: 100,
-            align: 'center',
-            headerAlign: 'center',
-            flex: 1,
         },
         {
             field: 'actions',
@@ -108,15 +100,11 @@ function AuthorsPage() {
     });
 
     const fetchunitTemplate = (filter = {}) => {
-        console.log('gone to service');
         setUnitTemplateLoading(true);
         AuthorService.all({ filter }, unitTemplatePage + 1, unitTemplateLimit).then(res => {
-            setUnitTemplates(res.data.records);
-            setUnitTemplateCount(res.data.count);
-            console.log('the length is ', Object.keys(filter).length);
-            if (filter.name == "") {
-                // setunitTemplateList(res.data.records);
-            }
+            setUnitTemplates(res.result.authors);
+            setUnitTemplateCount(res.result.count);
+            console.log(res.result);
         }).catch(err => {
             console.error(err);
             setUnitTemplateLoading(false);

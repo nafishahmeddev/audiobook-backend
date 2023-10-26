@@ -77,27 +77,27 @@ const StyledTextarea = styled(TextareaAutosize)(
 
 function FormDialog({ open, row, onClose, onConfirm }) {
     const { enqueueSnackbar } = useSnackbar();
-    const [banksName, setBanksName] = useState([]);
-    const [countries, setCountries] = useState([]);
     const [authorImage, setAuthorImage] = useState();
     //confirmation form
     const formik = useFormik({
         initialValues: {
-            name: "",
-            file: "",
-            picture: "",
-            gender: "",
+            firstName: "",
+            lastName: "",
+            image: "",
+            gender: "male",
             description: "",
             dob: "",
             dod: "",
             slug: "",
         },
         validationSchema: yup.object({
-            name: yup.string('Enter Name').required('Name is required'),
-            picture: yup.string("Select To").required("Picture is required"),
+            firstName: yup.string('Enter First Name').required('First Name is required'),
+            lastName: yup.string('Enter Last Name').required('Last Name is required'),
+            // image: yup.string("Select To").required("Image is required"),
             gender: yup.string('Select gender').required('Gender is required'),
             description: yup.string('Enter Description').required('Description is required'),
             dob: yup.string('Enter Date of Birth').required('Date of birth is required'),
+            dod: yup.string('Enter Date of Death').required('Date of birth is required'),
             slug: yup.string('Enter slug').required('slug is required'),
         }),
         onSubmit: (values) => {
@@ -105,9 +105,9 @@ function FormDialog({ open, row, onClose, onConfirm }) {
             alert(
                 JSON.stringify(
                     {
-                        fileName: values.file.name,
-                        type: values.file.type,
-                        size: `${values.file.size} bytes`
+                        fileName: values.image.name,
+                        type: values.image.type,
+                        size: `${values.image.size} bytes`
                     },
                     null,
                     2
@@ -120,8 +120,6 @@ function FormDialog({ open, row, onClose, onConfirm }) {
         onClose();
     }
     const handleOnConfirm = (values) => {
-        const country = countries.find(country => country.isoCode === values.country);
-        values.currency = country.currency;
         let res = null;
         if (row) {
             res = AuthorService.update(row._id, values)
@@ -142,9 +140,9 @@ function FormDialog({ open, row, onClose, onConfirm }) {
     const { setValues } = formik;
     useEffect(() => {
         setValues({
-            name: row?.name ?? "",
-            file: row?.file ?? "",
-            picture: row?.picture ?? "",
+            firstName: row?.firstName ?? "",
+            lastName: row?.lastName ?? "",
+            image: row?.image ?? "",
             sex: row?.sex ?? "",
             description: row?.description ?? "",
             dob: row?.dob ?? "",
@@ -153,15 +151,10 @@ function FormDialog({ open, row, onClose, onConfirm }) {
         })
     }, [row, setValues]);
 
-    const setFieldValue = (eventVal) => {
-        console.log('the event is ', eventVal);
-        setAuthorImage(eventVal);
-    }
-
     return (
         <>
             <Dialog open={open}
-                maxWidth="xs"
+                maxWidth="md"
                 fullWidth
                 onClose={() => handleOnClose()}>
                 <FormikProvider value={formik}>
@@ -177,22 +170,11 @@ function FormDialog({ open, row, onClose, onConfirm }) {
 
 
                         <Grid container spacing={2} rowSpacing={1}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="name"
-                                    name="name"
-                                    label="Name"
-                                    type="text"
-                                    fullWidth
-                                    variant="standard"
-                                    value={formik.values.name}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helperText={formik.touched.name && formik.errors.name}
-                                />
-                            </Grid>
+                            {authorImage &&
+                                <Grid item xs={12}>
+                                    <img src={authorImage} alt="Author Image" height="300" />
+                                </Grid>
+                            }
 
                             <Grid item xs={12}>
                                 <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 3 }}>
@@ -207,24 +189,79 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                                             accept="image/*"
                                             type="file"
                                             onChange={(event) => {
-                                                setFieldValue(event.currentTarget.files[0]);
+                                                setAuthorImage(URL.createObjectURL(event.target.files[0]));
+                                                formik.setValues({
+                                                    firstName: formik.values.firstName,
+                                                    lastName: formik.values.lastName,
+                                                    image: event.target.files[0],
+                                                    gender: formik.values.gender,
+                                                    description: formik.values.description,
+                                                    dob: formik.values.dob,
+                                                    dod: formik.values.dod,
+                                                    slug: formik.values.slug,
+                                                });
                                             }}
                                         />
                                     </label>
-                                    {authorImage && <img src={authorImage.file} alt="Author Image" height="300" />}
                                 </Stack>
 
                             </Grid>
 
+                            <Grid item xs={6}>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="firstName"
+                                    name="firstName"
+                                    label="Author First Name"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                    value={formik.values.firstName}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                                    helperText={formik.touched.firstName && formik.errors.firstName}
+                                />
+                            </Grid>
+
+                            <Grid item xs={6}>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="lastName"
+                                    name="lastName"
+                                    label="Author Last Name"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                    value={formik.values.lastName}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                                    helperText={formik.touched.lastName && formik.errors.lastName}
+                                />
+                            </Grid>
+
                             <Grid item xs={12} sx={{ mt: 2 }}>
-                                <FormLabel id="sex">Gender</FormLabel>
+                                <FormLabel id="sex">Author Gender</FormLabel>
                                 <RadioGroup
                                     row
                                     aria-labelledby="sex"
                                     name="sex"
+                                    onChange={(e) => {
+                                        formik.setValues({
+                                            firstName: formik.values.firstName,
+                                            lastName: formik.values.lastName,
+                                            image: formik.values.image,
+                                            gender: e.currentTarget.value,
+                                            description: formik.values.description,
+                                            dob: formik.values.dob,
+                                            dod: formik.values.dod,
+                                            slug: formik.values.slug,
+                                        });
+                                    }}
                                 >
-                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
                                     <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
                                     <FormControlLabel value="other" control={<Radio />} label="Other" />
                                 </RadioGroup>
                             </Grid>
@@ -242,7 +279,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     autoFocus
                                     margin="dense"
@@ -259,7 +296,7 @@ function FormDialog({ open, row, onClose, onConfirm }) {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     autoFocus
                                     margin="dense"

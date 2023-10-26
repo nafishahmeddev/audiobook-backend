@@ -25,6 +25,7 @@ router.post("/", async (req: any, res: any) => {
 })
 
 router.put("/", upload.single("image"), async (req: any, res: any) => {
+    console.log('has file ', req.file);
     const author = new Author({ ...req.body });
     if (req.file) {
         const extension = req.file.originalname.split('.').pop();;
