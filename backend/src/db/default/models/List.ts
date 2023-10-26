@@ -4,6 +4,7 @@ import slugify from "slugify";
 
 export interface IList {
   name: string,
+  subtitle: string,
   thumbnail: string,
   icon: string,
   position: string,
@@ -17,6 +18,7 @@ export interface IListList extends IList, Document {
 const ListSchema: Schema<IListList> = new Schema<IListList>(
   {
     name: String,
+    subtitle: String,
     thumbnail: String,
     icon: String,
     position: String,

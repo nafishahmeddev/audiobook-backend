@@ -8,16 +8,26 @@ import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
 
 
 const router = Router({ mergeParams: true });
-async function download(url: string, outPath: string): Promise<any> {
-    return await axios({
-        method: "get",
-        url: url,
-        responseType: "stream",
-    }).then(function (response) {
-        return response.data.pipe(fs.createWriteStream(outPath));
-    })
-}
+// async function download(url: string, outPath: string): Promise<any> {
+//     return await axios({
+//         method: "get",
+//         url: url,
+//         responseType: "stream",
+//     }).then(function (response) {
+//         return response.data.pipe(fs.createWriteStream(outPath));
+//     }).catch(err => console.error("Error"))
+// }
 
+
+
+function art(): string {
+    const arts = fs.readdirSync(process.env.PROJECT_PATH + "/dummy/cover");
+    return process.env.PROJECT_PATH + "/dummy/cover" + "/" + arts[Math.floor(Math.random() * arts.length)];
+}
+function userPhoto(): string {
+    const arts = fs.readdirSync(process.env.PROJECT_PATH + "/dummy/avatar");
+    return process.env.PROJECT_PATH + "/dummy/avatar" + "/" + arts[Math.floor(Math.random() * arts.length)];
+}
 router.patch("/generate", async (req: any, res: any) => {
     fs.readdirSync(`${process.env.ASSETS_PATH}/public/images`).forEach(e => fs.rmSync(`${process.env.ASSETS_PATH}/public/images/` + e));
     fs.readdirSync(`${process.env.ASSETS_PATH}/public/audios`).forEach(e => fs.rmSync(`${process.env.ASSETS_PATH}/public/audios/` + e));
@@ -38,7 +48,7 @@ router.patch("/generate", async (req: any, res: any) => {
             dod: Date(),
         });
         const filepath = `${process.env.ASSETS_PATH}/public/images/author-${author._id.toString()}-${Date.now()}.jpg`;
-        await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
+        fs.cpSync(userPhoto(), filepath);
         author.image = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await author.save();
     }
@@ -52,24 +62,25 @@ router.patch("/generate", async (req: any, res: any) => {
         });
 
         const filepath = `${process.env.ASSETS_PATH}/public/images/genre-${genre._id.toString()}-${Date.now()}.jpg`;
-        await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
+        fs.cpSync(art(), filepath);
         genre.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await genre.save();
     }
 
     for (let n = 0; n < 6; n++) {
         const list = new List({
-            name: faker.company.buzzAdjective(),
+            name: faker.company.name(),
+            subtitle: faker.commerce.department()
         });
         const filepath = `${process.env.ASSETS_PATH}/public/images/list-${list._id.toString()}-${Date.now()}.jpg`;
-        await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
+        fs.cpSync(art(), filepath);
         list.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await list.save();
     }
 
     for (let n = 0; n < 6; n++) {
         const album: any = new Album({
-            title: faker.company.buzzAdjective(),
+            title: faker.company.name(),
             excerpt: faker.lorem.sentence(),
             description: faker.lorem.sentence(),
             language: "en",
@@ -80,14 +91,14 @@ router.patch("/generate", async (req: any, res: any) => {
             type: ALBUM_TYPE_ENUM.ALBUM
         });
         const filepath = `${process.env.ASSETS_PATH}/public/images/album-${album._id.toString()}-${Date.now()}.jpg`;
-        await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
+        fs.cpSync(art(), filepath);
         album.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await album.save();
     }
 
     for (let n = 0; n < 100; n++) {
         const track: any = new Track({
-            title: faker.company.buzzAdjective(),
+            title: faker.music.songName(),
             excerpt: faker.lorem.sentence(),
             description: faker.lorem.sentence(),
             language: "en",
@@ -99,7 +110,7 @@ router.patch("/generate", async (req: any, res: any) => {
             album: (await Album.aggregate([{ $sample: { size: 1 } }]))[0]
         });
         const filepath = `${process.env.ASSETS_PATH}/public/images/track-${track._id.toString()}-${Date.now()}.jpg`;
-        await download(faker.image.urlPicsumPhotos({ width: 300, height: 100 }), filepath);
+        fs.cpSync(art(), filepath);
         track.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
 
         const sourcepath = `${process.env.PROJECT_PATH}/test.mp3`;
