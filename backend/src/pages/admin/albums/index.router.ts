@@ -1,4 +1,4 @@
-import { Album } from "../../../db/default";
+import { Album, Author } from "../../../db/default";
 import { Router } from "express";
 import PaginateHelper from "../../../helpers/PaginateHelper";
 import ResponseHelper from "../../../helpers/ResponseHelper";
@@ -12,7 +12,10 @@ router.post("/", async (req: any, res: any) => {
     const query = PaginateHelper.query(req);
     const options = PaginateHelper.options(req);
 
-    const albums = await Album.find(query, null, { ...options });
+    const albums = await Album.find(query, null, { ...options }).populate([{
+        path: "authors",
+        model: Author
+    }]);
     const count = await Album.countDocuments(query);
 
     return res.status(200).json(ResponseHelper.success({

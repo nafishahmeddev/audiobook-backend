@@ -26,11 +26,11 @@ function AlbumPage() {
     const navigate = useNavigate();
 
 
-    const [booksCount, setBooksCount] = useState(0);
-    const [booksLimit, setBooksLimit] = useState(20);
-    const [booksPage, setBooksPage] = useState(0);
-    const [booksLoading, setBooksLoading] = useState(false);
-    const [books, setBooks] = useState([]);
+    const [albumsCount, setAlbumsCount] = useState(0);
+    const [albumsLimit, setAlbumsLimit] = useState(20);
+    const [albumsPage, setAlbumsPage] = useState(0);
+    const [albumsLoading, setAlbumsLoading] = useState(false);
+    const [albums, setAlbums] = useState([]);
 
     const [formDialog, setFormDialog] = useState({
         open: false,
@@ -40,30 +40,21 @@ function AlbumPage() {
 
     const columns = [
         {
-            field: 'publisher',
-            headerName: 'Publisher',
-            minWidth: 100,
-            flex: 1,
-            align: 'left',
-            headerAlign: 'left',
-            renderCell: ({ value }) => value?.name,
-        },
-        {
-            field: 'bookName',
-            headerName: 'Book Name',
+            field: 'title',
+            headerName: 'Title',
             minWidth: 200,
             flex: 1,
             align: 'left',
             headerAlign: 'left',
         },
         {
-            field: 'author',
+            field: 'authors',
             headerName: 'Author',
             minWidth: 100,
             flex: 1,
             align: 'left',
             headerAlign: 'left',
-            renderCell: ({ value }) => value?.name,
+            renderCell: ({ value }) => value?.map((author) => author.firstName)?.join(', '),
         },
         {
             field: 'language',
@@ -75,48 +66,12 @@ function AlbumPage() {
             renderCell: ({ value }) => LanguageData[value ?? 'en'].name,
         },
         {
-            field: 'countryIso',
-            headerName: 'countries',
-            minWidth: 50,
-            flex: 1,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: ({ value }) => value?.map(country => Country[country]),
-        },
-        {
-            field: 'releaseDate',
-            headerName: 'Release Date',
-            minWidth: 100,
-            flex: 1,
-            align: 'center',
-            headerAlign: 'center',
-        },
-        {
-            field: 'category',
-            headerName: 'Category',
-            minWidth: 100,
-            flex: 1,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: ({ value }) => value?.name,
-        },
-        {
-            field: 'isActive',
-            headerName: 'Active',
-            minWidth: 50,
-            flex: 1,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: ({ value, row }) => <Switch defaultChecked={value} onChange={e => updateBook(row._id, { isActive: e.target.checked })} />,
-        },
-        {
-            field: 'audioBookType',
+            field: 'type',
             headerName: 'Audio Book Type',
-            minWidth: 50,
+            minWidth: 100,
             flex: 1,
             align: 'center',
             headerAlign: 'center',
-            renderCell: ({ value, row }) => value ?? "Book",
         },
         {
             field: 'actions',
@@ -153,16 +108,15 @@ function AlbumPage() {
     });
 
     const fetchPublisher = (filter = {}) => {
-        setBooksLoading(true);
-        BooksServices.all({ filter }, booksPage + 1, booksLimit).then(res => {
-            console.log('the res data is ', res.data);
-            setBooks(res.data);
-            setBooksCount(res.data.count);
+        setAlbumsLoading(true);
+        BooksServices.all({ filter }, albumsPage + 1, albumsLimit).then(res => {
+            setAlbums(res.result.albums);
+            setAlbumsCount(res.result.count);
         }).catch(err => {
             console.error(err);
-            setBooksLoading(false);
+            setAlbumsLoading(false);
         }).finally(() => {
-            setBooksLoading(false);
+            setAlbumsLoading(false);
         });
     }
 
@@ -208,10 +162,10 @@ function AlbumPage() {
 
     useEffect(() => {
         handleSubmit();
-    }, [booksLimit, booksPage, handleSubmit]);
+    }, [albumsLimit, albumsPage, handleSubmit]);
 
     return (
-        <MainCard title="Books">
+        <MainCard title="Albums">
             <Stack direction="column" alignItems="center" justifyContent="space-between" mb={5}>
                 <Box sx={{ width: '100%' }}>
                     <Box>
@@ -249,17 +203,17 @@ function AlbumPage() {
 
             <Box>
                 <DataGrid
-                    rows={books ?? []}
-                    rowCount={booksCount}
-                    loading={booksLoading}
+                    rows={albums ?? []}
+                    rowCount={albumsCount}
+                    loading={albumsLoading}
                     checkboxSelection
                     rowsPerPageOptions={[20, 50, 100]}
                     pagination
-                    page={booksPage}
-                    pageSize={booksLimit}
+                    page={albumsPage}
+                    pageSize={albumsLimit}
                     paginationMode="server"
-                    onPageChange={(page) => setBooksPage(page)}
-                    onPageSizeChange={pageSize => setBooksLimit(pageSize)}
+                    onPageChange={(page) => setAlbumsPage(page)}
+                    onPageSizeChange={pageSize => setAlbumsLimit(pageSize)}
 
                     columns={columns}
                     disableSelectionOnClick
