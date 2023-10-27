@@ -116,18 +116,26 @@ router.patch("/generate", async (req: any, res: any) => {
         const sourcepath = `${process.env.PROJECT_PATH}/dummy/audio/test.mp3`;
         const audiopath = `${process.env.ASSETS_PATH}/public/audios/track-${track._id.toString()}-${Date.now()}.m4a`;
 
-        exec(`ffmpeg -i ${sourcepath}  -c:a aac -b:a 192k  ${audiopath}`, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.error(`stderr: ${stderr}`);
-        });
+        try {
+            await new Promise((resolve, reject) => {
+                exec(`ffmpeg -i ${sourcepath}  -c:a aac -b:a 192k  ${audiopath}`, (error, stdout, stderr) => {
+                    if (error) {
+                        console.error(`exec error: ${error}`);
+                        reject(false);
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                    console.error(`stderr: ${stderr}`);
+                    resolve(true);
+                });
+            })
 
-        track.audio = audiopath.replace(process.env.ASSETS_PATH ?? "", "");
-        await track.save();
-        console.log(`Generated track ${n}....`)
+            track.audio = audiopath.replace(process.env.ASSETS_PATH ?? "", "");
+            await track.save();
+            console.log(`Generated track ${n}....`)
+        } catch (err) {
+            console.log(`Generated not possible track ${n}....`)
+        }
     }
 
     return res.status(200).json(ResponseHelper.success({
