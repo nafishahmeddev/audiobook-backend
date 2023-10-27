@@ -23,4 +23,30 @@ router.get("/", async (req: any, res: any) => {
     })));
 })
 
+router.get("/tracks", async (req: any, res: any) => {
+    const albumId = req.params.albumId;
+    const tracks = await Track.find({ album: albumId })
+        .populate([
+            { path: "authors", model: Author },
+            { path: "genres", model: Genre },
+            { path: "lists", model: List },
+            {
+                path: "album", model: Album, populate: [
+                    { path: "authors", model: Author },
+                    { path: "genres", model: Genre },
+                    { path: "lists", model: List }
+                ]
+            }
+        ]);
+
+
+    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
+        code: 200,
+        message: "Successful",
+        payload: {
+            tracks
+        }
+    })));
+})
+
 export default router;
