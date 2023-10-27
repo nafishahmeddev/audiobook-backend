@@ -21,7 +21,7 @@ router.post("/", async (req: any, res: any) => {
             { path: "lists", model: List },
         ])
 
-    const count = await Album.countDocuments({});
+    const count = await Album.countDocuments(query);
 
     return res.status(200).json(ResponseHelper.success({
         code: 200,
