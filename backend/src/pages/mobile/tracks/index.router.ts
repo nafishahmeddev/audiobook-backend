@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Album, Track } from "../../../db/default";
+import { Album, Author, Genre, List, Track } from "../../../db/default";
 import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });
@@ -11,11 +11,22 @@ router.post("/", async (req: any, res: any) => {
 
     const query: any = {};
     if (req.body.album) query["album"] = req.body.album;
+    if (req.body.keyword) {
+        query.title = new RegExp(`(.*)${req.body.keyword}(.*)`, `i`);
+    }
     const albums = await Track.find(query, null, { skip: skip, limit: limit, sort: { createdAt: -1 } })
-        .populate("album")
-        .populate("authors")
-        .populate("genres")
-        .populate("lists");
+        .populate([
+            { path: "authors", model: Author },
+            { path: "genres", model: Genre },
+            { path: "lists", model: List },
+            {
+                path: "album", model: Album, populate: [
+                    { path: "authors", model: Author },
+                    { path: "genres", model: Genre },
+                    { path: "lists", model: List }
+                ]
+            }
+        ])
 
     const count = await Track.countDocuments(query);
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Track } from "../../../db/default";
+import { Album, Author, Genre, List, Track } from "../../../db/default";
 import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });
@@ -7,10 +7,18 @@ const router = Router({ mergeParams: true });
 router.post("/", async (req: any, res: any) => {
     const _id = req.params._id;
     const track = await Track.findOne({ _id: _id })
-        .populate("track")
-        .populate("authors")
-        .populate("genres")
-        .populate("lists");
+        .populate([
+            { path: "authors", model: Author },
+            { path: "genres", model: Genre },
+            { path: "lists", model: List },
+            {
+                path: "album", model: Album, populate: [
+                    { path: "authors", model: Author },
+                    { path: "genres", model: Genre },
+                    { path: "lists", model: List }
+                ]
+            }
+        ])
 
     track?.generateUrls();
 
