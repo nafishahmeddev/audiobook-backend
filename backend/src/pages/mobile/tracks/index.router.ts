@@ -35,7 +35,7 @@ router.post("/", async (req: any, res: any) => {
         message: "Successful",
         payload: {
             tracks: tracks.map(e => e.generateUrls()),
-            pages: Math.ceil(count / page),
+            pages: Math.ceil(count / limit),
             page,
             count,
         }
