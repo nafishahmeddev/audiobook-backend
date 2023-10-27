@@ -23,7 +23,7 @@ router.post("/", async (req: any, res: any) => {
 
     const count = await Album.countDocuments(query);
 
-    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.success({
         code: 200,
         message: "Successful",
         payload: {
@@ -33,7 +33,7 @@ router.post("/", async (req: any, res: any) => {
             count,
             limit
         }
-    })));
+    }));
 })
 
 export default router;

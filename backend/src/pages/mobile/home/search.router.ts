@@ -42,7 +42,7 @@ router.post("/", async (req: any, res: any) => {
         }
     ]);
 
-    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.success({
         code: 200,
         message: "Successful",
         payload: {
@@ -52,7 +52,7 @@ router.post("/", async (req: any, res: any) => {
             albums: albums,
             tracks: tracks,
         }
-    })));
+    }));
 })
 
 export default router;

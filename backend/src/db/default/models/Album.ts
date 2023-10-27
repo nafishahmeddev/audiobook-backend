@@ -14,6 +14,7 @@ export interface IAlbum {
   language: string,
   totalTracks: number,
   thumbnail: string,
+  thumbnailUrl?: string,
   duration: string,
   authors: mongoose.ObjectId[],
   genres: mongoose.ObjectId[],
@@ -34,6 +35,7 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     language: String,
     totalTracks: Number,
     thumbnail: String,
+    thumbnailUrl: String,
     duration: Number,
     authors: { type: [mongoose.Types.ObjectId], ref: Author },
     genres: { type: [mongoose.Types.ObjectId], ref: Genre },
@@ -59,6 +61,7 @@ AlbumSchema.pre("save", async function () {
     if (count > 0) slug = slug + "-" + count;
     this.slug = slug.toLowerCase();
   }
+  this.thumbnailUrl = `${process.env.PUBLIC_URL}${this.thumbnail}`
 })
 
 export const Album: Model<IAlbumModel> = conn.model<IAlbumModel>("Album", AlbumSchema);

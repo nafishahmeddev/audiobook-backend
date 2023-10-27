@@ -86,7 +86,7 @@ router.get("/", async (req: any, res: any) => {
     ]);
 
 
-    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.success({
         code: 200,
         message: "Cool",
         payload: {
@@ -96,7 +96,7 @@ router.get("/", async (req: any, res: any) => {
             albums: albums,
             tracks: tracks,
         }
-    })));
+    }));
 })
 
 export default router;

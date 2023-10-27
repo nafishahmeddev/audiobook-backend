@@ -14,7 +14,9 @@ export interface ITrack {
   slug: string,
   language: string,
   thumbnail: string,
+  thumbnailUrl?: string,
   audio: string,
+  audioUrl?: string,
   duration: string,
   authors: mongoose.ObjectId[],
   genres: mongoose.ObjectId[],
@@ -25,7 +27,6 @@ export interface ITrack {
 }
 
 export interface ITrackModel extends ITrack, Document {
-  generateUrls(): ITrackModel
 }
 
 const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
@@ -36,7 +37,9 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
     slug: { type: String, unique: true },
     language: String,
     thumbnail: String,
+    thumbnailUrl: String,
     audio: String,
+    audioUrl: String,
     duration: Number,
     authors: { type: [mongoose.Types.ObjectId], ref: Author },
     genres: { type: [mongoose.Types.ObjectId], ref: Genre },
@@ -52,11 +55,7 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
     timestamps: true,
     // You can define any custom methods or other configurations here if needed
     methods: {
-      generateUrls: function () {
-        this.thumbnail = this.thumbnail ? process.env.PUBLIC_URL + this.thumbnail : "";
-        this.audio = this.audio ? process.env.PUBLIC_URL + this.audio : "";
-        return this;
-      }
+
     },
   }
 );
@@ -68,6 +67,8 @@ TrackSchema.pre("save", async function () {
     if (count > 0) slug = slug + "-" + count;
     this.slug = slug.toLowerCase();
   }
+  this.thumbnailUrl = `${process.env.PUBLIC_URL}${this.thumbnail}`
+  this.audioUrl = `${process.env.PUBLIC_URL}${this.audio}`
 })
 
 export const Track: Model<ITrackModel> = conn.model<ITrackModel>("Track", TrackSchema);
