@@ -34,7 +34,7 @@ const ListSchema: Schema<IListList> = new Schema<IListList>(
 
 ListSchema.pre("save", async function () {
   if (!this.slug) {
-    let slug: string = slugify(this.name);
+    let slug: string = slugify(this.name, { remove: /[*+~.()'"!:@]/g, lower: true });
     const count = await List.countDocuments({ slug: new RegExp(slug, "i") });
     if (count > 0) slug = slug + "-" + count;
     this.slug = slug.toLowerCase();

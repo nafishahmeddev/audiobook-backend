@@ -37,7 +37,7 @@ const AuthorSchema: Schema<IAuthorAuthor> = new Schema<IAuthorAuthor>(
 
 AuthorSchema.pre("save", async function () {
   if (!this.slug) {
-    let slug: string = slugify(this.firstName + " " + this.lastName);
+    let slug: string = slugify(this.firstName + " " + this.lastName, { remove: /[*+~.()'"!:@]/g, lower: true });
     const count = await Author.countDocuments({ slug: new RegExp(slug, "i") });
     if (count > 0) slug = slug + "-" + count;
     this.slug = slug.toLowerCase();

@@ -63,7 +63,7 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
 
 TrackSchema.pre("save", async function () {
   if (!this.slug) {
-    let slug: string = slugify(this.title);
+    let slug: string = slugify(this.title, { remove: /[*+~.()'"!:@]/g, lower: true });
     const count = await Track.countDocuments({ slug: new RegExp(slug, "i") });
     if (count > 0) slug = slug + "-" + count;
     this.slug = slug.toLowerCase();
