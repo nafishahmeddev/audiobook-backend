@@ -27,7 +27,7 @@ router.patch("/generate", async (req: any, res: any) => {
     await Album.deleteMany({ _id: { $ne: null } });
     await Track.deleteMany({ _id: { $ne: null } });
 
-    for (let n = 0; n < 6; n++) {
+    for (let n = 0; n < 20; n++) {
         const author = new Author({
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
@@ -43,7 +43,7 @@ router.patch("/generate", async (req: any, res: any) => {
     }
 
 
-    for (let n = 0; n < 6; n++) {
+    for (let n = 0; n < 10; n++) {
         const genre = await Genre.findOne({
             name: faker.music.genre(),
         }) ?? new Genre({
@@ -56,7 +56,7 @@ router.patch("/generate", async (req: any, res: any) => {
         await genre.save();
     }
 
-    for (let n = 0; n < 6; n++) {
+    for (let n = 0; n < 20; n++) {
         const list = new List({
             name: faker.company.name(),
             subtitle: faker.commerce.department()
@@ -67,7 +67,7 @@ router.patch("/generate", async (req: any, res: any) => {
         await list.save();
     }
 
-    for (let n = 0; n < 6; n++) {
+    for (let n = 0; n < 30; n++) {
         const album: any = new Album({
             title: faker.company.name(),
             excerpt: faker.lorem.sentence(),
@@ -85,7 +85,7 @@ router.patch("/generate", async (req: any, res: any) => {
         await album.save();
     }
 
-    for (let n = 0; n < 100; n++) {
+    for (let n = 0; n < 200; n++) {
         const track: any = new Track({
             title: faker.music.songName(),
             excerpt: faker.lorem.sentence(),
