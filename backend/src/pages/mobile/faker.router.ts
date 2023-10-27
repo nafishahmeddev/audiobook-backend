@@ -85,7 +85,7 @@ router.patch("/generate", async (req: any, res: any) => {
         await album.save();
     }
 
-    for (let n = 0; n < 200; n++) {
+    for (let n = 0; n < 2000; n++) {
         const track: any = new Track({
             title: faker.music.songName(),
             excerpt: faker.lorem.sentence(),
