@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 import axios from "axios";
 import fs from "fs";
 import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
+import { exec } from "child_process";
 
 
 const router = Router({ mergeParams: true });
@@ -27,6 +28,7 @@ router.patch("/generate", async (req: any, res: any) => {
     await Album.deleteMany({ _id: { $ne: null } });
     await Track.deleteMany({ _id: { $ne: null } });
 
+    console.log("Generating authors....")
     for (let n = 0; n < 20; n++) {
         const author = new Author({
             firstName: faker.person.firstName(),
@@ -40,9 +42,11 @@ router.patch("/generate", async (req: any, res: any) => {
         fs.cpSync(userPhoto(), filepath);
         author.image = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await author.save();
+        console.log(`Generated author ${n}....`)
     }
 
 
+    console.log("Generating genre....")
     for (let n = 0; n < 10; n++) {
         const genre = await Genre.findOne({
             name: faker.music.genre(),
@@ -54,8 +58,10 @@ router.patch("/generate", async (req: any, res: any) => {
         fs.cpSync(art(), filepath);
         genre.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await genre.save();
+        console.log(`Generated genres ${n}....`)
     }
 
+    console.log("Generating lists....")
     for (let n = 0; n < 20; n++) {
         const list = new List({
             name: faker.company.name(),
@@ -65,8 +71,10 @@ router.patch("/generate", async (req: any, res: any) => {
         fs.cpSync(art(), filepath);
         list.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await list.save();
+        console.log(`Generated list ${n}....`)
     }
 
+    console.log("Generating albums....")
     for (let n = 0; n < 30; n++) {
         const album: any = new Album({
             title: faker.company.name(),
@@ -83,9 +91,12 @@ router.patch("/generate", async (req: any, res: any) => {
         fs.cpSync(art(), filepath);
         album.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
         await album.save();
+        console.log(`Generated album ${n}....`)
     }
 
-    for (let n = 0; n < 2000; n++) {
+
+    console.log("Generating tracks....")
+    for (let n = 0; n < 100; n++) {
         const track: any = new Track({
             title: faker.music.songName(),
             excerpt: faker.lorem.sentence(),
@@ -102,11 +113,21 @@ router.patch("/generate", async (req: any, res: any) => {
         fs.cpSync(art(), filepath);
         track.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
 
-        const sourcepath = `${process.env.PROJECT_PATH}/test.mp3`;
-        const audiopath = `${process.env.ASSETS_PATH}/public/audios/track-${track._id.toString()}-${Date.now()}.mp3`;
-        fs.cpSync(sourcepath, audiopath);
+        const sourcepath = `${process.env.PROJECT_PATH}/dummy/audio/test.mp3`;
+        const audiopath = `${process.env.ASSETS_PATH}/public/audios/track-${track._id.toString()}-${Date.now()}.m4a`;
+
+        exec(`ffmpeg -i ${sourcepath}  -c:a aac -b:a 192k  ${audiopath}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.error(`stderr: ${stderr}`);
+        });
+
         track.audio = audiopath.replace(process.env.ASSETS_PATH ?? "", "");
         await track.save();
+        console.log(`Generated track ${n}....`)
     }
 
     return res.status(200).json(ResponseHelper.success({
