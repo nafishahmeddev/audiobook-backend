@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import moment from "moment";
-export const payloadDebugger = (req: any, res: any, next: any) => {
+export const PayloadDebugger = (req: any, res: any, next: any) => {
     if (req.id) {
         return next();
     }

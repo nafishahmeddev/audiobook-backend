@@ -1,11 +1,10 @@
 import path from "path";
 import fs from "fs";
 import { Application, Router, IRouter, RequestHandler } from "express";
-import { payloadDebugger } from "./middleware/PayloadDebugger";
+import { PayloadDebugger } from "./middleware/PayloadDebugger";
 const router = Router({
     mergeParams: true
 });
-router.use(payloadDebugger);
 const basePath = path.join(__dirname, "pages");
 const baseEndpoint = "/api/v1";
 const registered: { Path: string, Auth?: boolean }[] = [];
@@ -69,7 +68,7 @@ async function map(deps: string[] = []) {
             Auth: false
         })
 
-        const middlewares: RequestHandler[] = [];
+        const middlewares: RequestHandler[] = [PayloadDebugger];
         router.use(uri, ...middlewares, route);
     }
 }
