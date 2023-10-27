@@ -34,7 +34,7 @@ router.post("/", async (req: any, res: any) => {
         code: 200,
         message: "Successful",
         payload: {
-            albums,
+            albums: albums.map(e => e.generateUrls()),
             pages: Math.ceil(count / page)
         }
     }));
