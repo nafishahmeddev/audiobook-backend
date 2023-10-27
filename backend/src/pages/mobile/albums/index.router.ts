@@ -8,7 +8,7 @@ const router = Router({ mergeParams: true });
 
 router.post("/", async (req: any, res: any) => {
     const page = Number(req.query.page || 1);
-    const limit = 30;
+    const limit = Number(req.body.limit || 20);
     const skip = (page - 1) * limit;
     const query: FilterQuery<IAlbumModel> = {};
     if (req.body.keyword) {
@@ -31,6 +31,7 @@ router.post("/", async (req: any, res: any) => {
             pages: Math.ceil(count / limit),
             page,
             count,
+            limit
         }
     }));
 })
