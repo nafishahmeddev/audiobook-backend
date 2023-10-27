@@ -4,7 +4,7 @@ import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });
 
-router.post("/", async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
     const _id = req.params._id;
     const track = await Track.findOne({ _id: _id })
         .populate([

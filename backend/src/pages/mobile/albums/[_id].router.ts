@@ -4,7 +4,7 @@ import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });
 
-router.post("/", async (req: any, res: any) => {
+router.get("/", async (req: any, res: any) => {
     const albumId = req.params.albumId;
     const album = (await Album.findOne({ _id: albumId })
         .populate([
