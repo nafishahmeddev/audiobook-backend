@@ -1,4 +1,4 @@
-import { Album } from "../../../../db/default";
+import { Album, Author } from "../../../../db/default";
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";
@@ -10,7 +10,10 @@ const router = Router({ mergeParams: true });
 
 router.get("/", async (req: any, res: any) => {
     const _id = req.params.albumId;
-    const album = await Album.findOne({ _id: _id });
+    const album = await Album.findOne({ _id: _id }).populate([{
+        path: "authors",
+        model: Author
+    }]);
 
     return res.status(200).json(ResponseHelper.success({
         code: 200,

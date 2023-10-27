@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('../pages/dashboard')));
 
 // web routing
 const AlbumPage = Loadable(lazy(() => import('../pages/album/AlbumPage')));
+const TrackListPage = Loadable(lazy(() => import('../pages/album/TrackListPage')));
 const AddAlbumPage = Loadable(lazy(() => import('../pages/album/AddAlbumPage')));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -33,6 +34,14 @@ const MainRoutes = {
     {
       path: 'albums',
       element: <AlbumPage />
+    },
+    {
+      path: "albums/:album_id/add-albums",
+      element: <AddAlbumPage />
+    },
+    {
+      path: "albums/:album_id/track-list",
+      element: <TrackListPage />
     },
     {
       path: 'add-albums',

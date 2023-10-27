@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import * as AlbumServices from "@app/services/admin/album/AlbumServices";
+import * as TrackServices from "@app/services/admin/album/TrackServices";
 import { useSnackbar } from 'notistack';
 import FormDialog from "./components/form.dialog";
 import TrackDialog from "./components/track.dialog";
@@ -16,14 +16,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 import MainCard from '@app/themes/ui-component/cards/MainCard';
 import Country from "@app/assets/Countries.js";
 import LanguageData from "@app/assets/LanguageData.js";
 
-function AlbumPage() {
+function TrackListPage() {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ function AlbumPage() {
         open: false,
         row: null
     });
-
+    const params = useParams();
 
     const columns = [
         {
@@ -84,7 +84,7 @@ function AlbumPage() {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
-            width: 150,
+            width: 100,
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={<DeleteIcon />}
@@ -95,14 +95,8 @@ function AlbumPage() {
                 <GridActionsCellItem
                     icon={<EditIcon />}
                     label="Edit Album"
-                    onClick={() => navigate(`${params.row._id}/add-albums`)}
+                    onClick={() => handleOpenTrackDialog(params.row)}
                     key={`action-edit-admin`}
-                />,
-                <GridActionsCellItem
-                    icon={<QueueMusicIcon />}
-                    label="Toggle Track Dialog"
-                    onClick={() => navigate(`${params.row._id}/track-list`)}
-                    key={`action-edit-track-dialog`}
                 />,
             ],
         },
@@ -120,10 +114,10 @@ function AlbumPage() {
         },
     });
 
-    const fetchPublisher = (filter = {}) => {
+    const fetchPublisher = () => {
         setAlbumsLoading(true);
-        AlbumServices.all({ filter }, albumsPage + 1, albumsLimit).then(res => {
-            setAlbums(res.result.albums);
+        TrackServices.all({ album: params?.album_id }, albumsPage + 1, albumsLimit).then(res => {
+            setAlbums(res.result.tracks);
             setAlbumsCount(res.result.count);
         }).catch(err => {
             console.error(err);
@@ -166,7 +160,7 @@ function AlbumPage() {
     }
 
     const updateBook = (_id, body) => {
-        AlbumServices.update(_id, body).then((res) => {
+        TrackServices.update(_id, body).then((res) => {
             enqueueSnackbar(res.message, { variant: "success" });
             formik.handleSubmit();
         }).catch(err => {
@@ -176,7 +170,7 @@ function AlbumPage() {
 
     const handleDelete = (row = null) => {
         if (window.confirm("Are you sure?")) {
-            AlbumServices.destroy(row._id).then(res => {
+            TrackServices.destroy(row._id).then(res => {
                 enqueueSnackbar(res.message, { variant: "success" });
                 formik.handleSubmit();
             }).catch(err => {
@@ -192,41 +186,7 @@ function AlbumPage() {
     }, [albumsLimit, albumsPage, handleSubmit]);
 
     return (
-        <MainCard title="Albums">
-            <Stack direction="column" alignItems="center" justifyContent="space-between" mb={5}>
-                <Box sx={{ width: '100%' }}>
-                    <Box>
-                        <form onSubmit={formik.handleSubmit}>
-                            <Grid container spacing={2} direction="row" alignItems="flex-end">
-                                <Grid item xs sx={{ minWidth: 150 }}>
-                                    <TextField margin="dense"
-                                        variant="standard"
-                                        label="Name"
-                                        name="name"
-                                        id="name"
-                                        value={formik.values.name}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.name && Boolean(formik.errors.name)}
-                                        helperText={formik.touched.name && formik.errors.name}
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <Button color="secondary" variant="contained" type="submit" size="small">Search</Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button color="secondary" variant="contained" type="button" size="small" onClick={() => { formik.resetForm(); formik.handleSubmit() }}>Reset</Button>
-                                </Grid>
-
-                                <Grid item>
-                                    <Button color="secondary" variant="contained" type="button" size="small" onClick={() => { addNewAlbum() }}>New Album</Button>
-                                </Grid>
-
-                            </Grid>
-                        </form>
-                    </Box>
-
-                </Box>
-            </Stack>
+        <MainCard title="Tracks">
 
             <Box>
                 <DataGrid
@@ -276,4 +236,4 @@ function AlbumPage() {
         </MainCard>
     )
 }
-export default AlbumPage;
+export default TrackListPage;

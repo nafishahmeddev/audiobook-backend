@@ -5,6 +5,10 @@ export const all = (data, page, limit) => {
   return request.http.post(`/?page=${page}&limit=${limit}`, data);
 };
 
+export const one = (_id) => {
+  return request.http.get(`/${_id}`);
+};
+
 export const create = (data) => {
   return request.http.put(`/`, data);
 };
