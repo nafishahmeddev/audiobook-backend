@@ -17,7 +17,7 @@ function userPhoto(): string {
     return process.env.PROJECT_PATH + "/dummy/avatar" + "/" + arts[Math.floor(Math.random() * arts.length)];
 }
 router.patch("/generate", async (req: any, res: any) => {
-    return res.send("Currently turned off....");
+    // return res.send("Currently turned off....");
     fs.readdirSync(`${process.env.ASSETS_PATH}/public/images`).forEach(e => fs.rmSync(`${process.env.ASSETS_PATH}/public/images/` + e));
     fs.readdirSync(`${process.env.ASSETS_PATH}/public/audios`).forEach(e => fs.rmSync(`${process.env.ASSETS_PATH}/public/audios/` + e));
 
