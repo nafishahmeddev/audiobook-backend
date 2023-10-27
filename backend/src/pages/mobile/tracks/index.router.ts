@@ -15,16 +15,17 @@ router.post("/", async (req: any, res: any) => {
     if (req.body.keyword) {
         query.title = new RegExp(`(.*)${req.body.keyword}(.*)`, `i`);
     }
-    const tracks = (await Track.find(query, null, { skip: skip, limit: limit, sort: { createdAt: -1 } })
+    const tracks = (await Track.find(query, { thumbnail: 0 }, { skip: skip, limit: limit, sort: { createdAt: -1 } })
         .populate([
-            { path: "authors", model: Author },
-            { path: "genres", model: Genre },
-            { path: "lists", model: List },
+            { path: "authors", model: Author, select: "-image" },
+            { path: "genres", model: Genre, select: "-thumbnail" },
+            { path: "lists", model: List, select: "-thumbnail" },
             {
-                path: "album", model: Album, populate: [
-                    { path: "authors", model: Author },
-                    { path: "genres", model: Genre },
-                    { path: "lists", model: List }
+                path: "album", model: Album, select: "-thumbnail",
+                populate: [
+                    { path: "authors", model: Author, select: "-image" },
+                    { path: "genres", model: Genre, select: "-thumbnail" },
+                    { path: "lists", model: List, select: "-thumbnail" },
                 ]
             }
         ]))

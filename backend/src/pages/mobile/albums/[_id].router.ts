@@ -25,16 +25,17 @@ router.get("/", async (req: any, res: any) => {
 
 router.get("/tracks", async (req: any, res: any) => {
     const albumId = req.params.albumId;
-    const tracks = await Track.find({ album: albumId })
+    const tracks = await Track.find({ album: albumId }, { thumbnail: 0 })
         .populate([
-            { path: "authors", model: Author },
-            { path: "genres", model: Genre },
-            { path: "lists", model: List },
+            { path: "authors", model: Author, select: "-image" },
+            { path: "genres", model: Genre, select: "-thumbnail" },
+            { path: "lists", model: List, select: "-thumbnail" },
             {
-                path: "album", model: Album, populate: [
-                    { path: "authors", model: Author },
-                    { path: "genres", model: Genre },
-                    { path: "lists", model: List }
+                path: "album", model: Album, select: "-thumbnail",
+                populate: [
+                    { path: "authors", model: Author, select: "-image" },
+                    { path: "genres", model: Genre, select: "-thumbnail" },
+                    { path: "lists", model: List, select: "-thumbnail" },
                 ]
             }
         ]);

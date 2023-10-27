@@ -23,21 +23,22 @@ router.post("/", async (req: any, res: any) => {
         }
     }, null, { limit: 10 });
 
-    const albums = await Album.find({ title: regexp }, null).limit(10).populate([
-        { path: "authors", model: Author },
-        { path: "genres", model: Genre },
-        { path: "lists", model: List }
+    const albums = await Album.find({ title: regexp }, { thumbnail: 0 }).limit(10).populate([
+        { path: "authors", model: Author, select: "-image" },
+        { path: "genres", model: Genre, select: "-thumbnail" },
+        { path: "lists", model: List, select: "-thumbnail" },
     ])
 
-    const tracks = await Track.find({ title: regexp }, null).limit(10).populate([
-        { path: "authors", model: Author },
-        { path: "genres", model: Genre },
-        { path: "lists", model: List },
+    const tracks = await Track.find({ title: regexp }, { thumbnail: 0 }).limit(10).populate([
+        { path: "authors", model: Author, select: "-image" },
+        { path: "genres", model: Genre, select: "-thumbnail" },
+        { path: "lists", model: List, select: "-thumbnail" },
         {
-            path: "album", model: Album, populate: [
-                { path: "authors", model: Author },
-                { path: "genres", model: Genre },
-                { path: "lists", model: List }
+            path: "album", model: Album, select: "-thumbnail",
+            populate: [
+                { path: "authors", model: Author, select: "-image" },
+                { path: "genres", model: Genre, select: "-thumbnail" },
+                { path: "lists", model: List, select: "-thumbnail" },
             ]
         }
     ]);
