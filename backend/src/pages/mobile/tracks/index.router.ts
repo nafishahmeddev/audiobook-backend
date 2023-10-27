@@ -14,7 +14,7 @@ router.post("/", async (req: any, res: any) => {
     if (req.body.keyword) {
         query.title = new RegExp(`(.*)${req.body.keyword}(.*)`, `i`);
     }
-    const albums = await Track.find(query, null, { skip: skip, limit: limit, sort: { createdAt: -1 } })
+    const tracks = await Track.find(query, null, { skip: skip, limit: limit, sort: { createdAt: -1 } })
         .populate([
             { path: "authors", model: Author },
             { path: "genres", model: Genre },
@@ -34,7 +34,7 @@ router.post("/", async (req: any, res: any) => {
         code: 200,
         message: "Successful",
         payload: {
-            albums: albums.map(e => e.generateUrls()),
+            tracks: tracks.map(e => e.generateUrls()),
             pages: Math.ceil(count / page)
         }
     }));
