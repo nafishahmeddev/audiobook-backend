@@ -86,17 +86,17 @@ router.get("/", async (req: any, res: any) => {
     ]);
 
 
-    return res.status(200).json(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
         code: 200,
         message: "Cool",
         payload: {
-            lists: lists.map(list => ({ ...list, thumbnail: baseUrl(list.thumbnail) })),
-            genres: genres.map(genre => ({ ...genre, thumbnail: baseUrl(genre.thumbnail) })),
-            authors: authors.map(author => ({ ...author, image: baseUrl(author.image) })),
-            albums: albums.map(album => ({ ...album, thumbnail: baseUrl(album.thumbnail) })),
-            tracks: tracks.map(track => ({ ...track, thumbnail: baseUrl(track.thumbnail), audio: baseUrl(track.audio) })),
+            lists: lists,
+            genres: genres,
+            authors: authors,
+            albums: albums,
+            tracks: tracks,
         }
-    }));
+    })));
 })
 
 export default router;

@@ -42,17 +42,17 @@ router.post("/", async (req: any, res: any) => {
         }
     ]);
 
-    return res.status(200).json(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
         code: 200,
         message: "Successful",
         payload: {
-            lists: lists.map(list => ({ ...list.toJSON(), thumbnail: baseUrl(list.thumbnail) })),
-            genres: genres.map(genre => ({ ...genre.toJSON(), thumbnail: baseUrl(genre.thumbnail) })),
-            authors: authors.map(author => ({ ...author.toJSON(), image: baseUrl(author.image) })),
-            albums: albums.map(album => ({ ...album.toJSON(), thumbnail: baseUrl(album.thumbnail) })),
-            tracks: tracks.map(track => ({ ...track.toJSON(), thumbnail: baseUrl(track.thumbnail), audio: baseUrl(track.audio) })),
+            lists: lists,
+            genres: genres,
+            authors: authors,
+            albums: albums,
+            tracks: tracks,
         }
-    }));
+    })));
 })
 
 export default router;

@@ -25,4 +25,10 @@ export default class ResponseHelper {
         }
     }
 
+    static appendBaseurl(data: any) {
+        JSON.parse(JSON.stringify(data)
+            .replace(/\/public\/images\//g, `${process.env.PUBLIC_URL?.replace(":", "\:")}/public/images/`)
+            .replace(/\/public\/audios\//g, `${process.env.PUBLIC_URL?.replace(":", "\:")}/public/audios/`));
+    }
+
 }

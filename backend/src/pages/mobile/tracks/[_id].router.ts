@@ -22,13 +22,13 @@ router.get("/", async (req: any, res: any) => {
 
     track?.generateUrls();
 
-    return res.status(200).json(ResponseHelper.success({
+    return res.status(200).json(ResponseHelper.appendBaseurl(ResponseHelper.success({
         code: 200,
         message: "Successful",
         payload: {
             track
         }
-    }));
+    })));
 })
 
 export default router;
