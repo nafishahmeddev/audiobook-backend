@@ -7,3 +7,7 @@ export const format = (seconds) => {
 
 	return `${minutes}:${seconds}`;
 };
+
+export const siteURL = (path = "") => {
+	return "https://audiobook.nafish.me/api/v1/mobile" + path;
+}

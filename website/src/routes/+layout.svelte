@@ -1,48 +1,13 @@
 <script>
 	import './styles.css';
 	import Controls from 'src/components/audio-player/Controls.svelte';
+	import { register } from 'swiper/element/bundle';
+	register();
 </script>
 
-<div class="app">
-	<main>
+<div class="h-screen flex flex-col">
+	<main class="flex-1 overflow-auto">
 		<slot />
 	</main>
 	<Controls />
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>
