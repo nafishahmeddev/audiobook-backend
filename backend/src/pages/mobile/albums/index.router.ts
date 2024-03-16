@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { Album, Author, Genre, List, Track } from "../../../db/default";
+import { Album, Author, Genre, List, Track } from "../../../db";
 import ResponseHelper from "../../../helpers/ResponseHelper";
 import { FilterQuery } from "mongoose";
-import { IAlbumModel } from "db/default/models/Album";
+import { IAlbumModel } from "db/models/Album";
 
 const router = Router({ mergeParams: true });
 

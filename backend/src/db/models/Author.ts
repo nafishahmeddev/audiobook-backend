@@ -1,5 +1,4 @@
-import { Schema, Document, Model } from "mongoose";
-import conn from "../conn";
+import mongoose, { Schema, Document, Model, mongo } from "mongoose";
 import slugify from "slugify";
 
 export interface IAuthor {
@@ -48,4 +47,4 @@ AuthorSchema.pre("save", async function () {
 })
 
 
-export const Author: Model<IAuthorAuthor> = conn.model<IAuthorAuthor>("Author", AuthorSchema);
+export const Author: Model<IAuthorAuthor> = mongoose.model<IAuthorAuthor>("Author", AuthorSchema);

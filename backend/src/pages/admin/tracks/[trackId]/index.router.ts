@@ -1,4 +1,4 @@
-import { Track } from "../../../../db/default";
+import { Track } from "../../../../db";
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";

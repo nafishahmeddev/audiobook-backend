@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Admin } from "../../db/default";
+import { Admin } from "../../db";
 import jwt from "jsonwebtoken";
 
 const router = Router({ mergeParams: true });

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { Admin } from "../../db/default";
+import { Admin } from "../../db";
 
 const router = Router({ mergeParams: true });
 router.post("/", async (req: any, res) => {

@@ -1,4 +1,4 @@
-import { Author } from "../../../../db/default";
+import { Author } from "../../../../db";
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";

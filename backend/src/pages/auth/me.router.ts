@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Admin } from "../../db/default";
+import { Admin } from "../../db";
 export const OPTIONS = { secure: true };
 const router = Router({ mergeParams: true });
 

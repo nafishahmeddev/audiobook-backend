@@ -1,4 +1,4 @@
-import { Album, Author } from "../../../db/default";
+import { Album, Author } from "../../../db";
 import { Router } from "express";
 import PaginateHelper from "../../../helpers/PaginateHelper";
 import ResponseHelper from "../../../helpers/ResponseHelper";

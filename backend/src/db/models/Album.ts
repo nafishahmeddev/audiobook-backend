@@ -1,9 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import conn from "../conn";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
 import { List } from "./List";
-import { ALBUM_TYPE_ENUM } from "../../../enums/album";
+import { ALBUM_TYPE_ENUM } from "../../enums/album";
 import slugify from "slugify";
 
 export interface IAlbum {
@@ -64,4 +63,4 @@ AlbumSchema.pre("save", async function () {
   this.thumbnailUrl = `${process.env.PUBLIC_URL}${this.thumbnail}`
 })
 
-export const Album: Model<IAlbumModel> = conn.model<IAlbumModel>("Album", AlbumSchema);
+export const Album: Model<IAlbumModel> = mongoose.model<IAlbumModel>("Album", AlbumSchema);

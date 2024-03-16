@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import conn from "../conn";
 // ! Users to have id of object IDs.
 
 interface Admin {
@@ -43,4 +42,4 @@ export const AdminSchema = new mongoose.Schema<Admin>(
     { timestamps: true }
 );
 
-export const Admin = conn.model<Admin>("Admin", AdminSchema);
+export const Admin = mongoose.model<Admin>("Admin", AdminSchema);

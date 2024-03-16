@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Album, Author, Genre, List, Track } from "../../../db/default";
+import { Album, Author, Genre, List, Track } from "../../../db";
 import ResponseHelper from "../../../helpers/ResponseHelper";
 
 const router = Router({ mergeParams: true });

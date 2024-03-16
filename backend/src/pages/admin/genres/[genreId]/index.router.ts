@@ -1,4 +1,4 @@
-import { Genre } from "../../../../db/default";
+import { Genre } from "../../../../db";
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";

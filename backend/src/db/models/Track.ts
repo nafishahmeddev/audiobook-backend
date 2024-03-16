@@ -1,11 +1,10 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import conn from "../conn";
 import { Album, IAlbum } from "./Album";
 import slugify from "slugify";
 import { List } from "./List";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
-import { TRACK_TYPE_ENUM } from "../../../enums/album";
+import { TRACK_TYPE_ENUM } from "../../enums/album";
 
 export interface ITrack {
   title: string,
@@ -71,4 +70,4 @@ TrackSchema.pre("save", async function () {
   this.audioUrl = `${process.env.PUBLIC_URL}${this.audio}`
 })
 
-export const Track: Model<ITrackModel> = conn.model<ITrackModel>("Track", TrackSchema);
+export const Track: Model<ITrackModel> = mongoose.model<ITrackModel>("Track", TrackSchema);

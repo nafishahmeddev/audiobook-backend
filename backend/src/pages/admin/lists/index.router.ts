@@ -1,4 +1,4 @@
-import { List } from "../../../db/default";
+import { List } from "../../../db";
 import { Router } from "express";
 import PaginateHelper from "../../../helpers/PaginateHelper";
 import ResponseHelper from "../../../helpers/ResponseHelper";

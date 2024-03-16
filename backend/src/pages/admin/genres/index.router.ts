@@ -1,4 +1,4 @@
-import { Genre } from "../../../db/default";
+import { Genre } from "../../../db";
 import { Router } from "express";
 import PaginateHelper from "../../../helpers/PaginateHelper";
 import ResponseHelper from "../../../helpers/ResponseHelper";

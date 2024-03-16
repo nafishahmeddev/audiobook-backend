@@ -1,4 +1,4 @@
-import { Track } from "../../../db/default";
+import { Track } from "../../../db";
 import { Router } from "express";
 import PaginateHelper from "../../../helpers/PaginateHelper";
 import ResponseHelper from "../../../helpers/ResponseHelper";

@@ -1,5 +1,4 @@
-import { Schema, Document, Model } from "mongoose";
-import conn from "../conn";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import slugify from "slugify";
 
 export interface IList {
@@ -44,4 +43,4 @@ ListSchema.pre("save", async function () {
   this.thumbnailUrl = `${process.env.PUBLIC_URL}${this.thumbnail}`
 })
 
-export const List: Model<IListList> = conn.model<IListList>("List", ListSchema);
+export const List: Model<IListList> = mongoose.model<IListList>("List", ListSchema);

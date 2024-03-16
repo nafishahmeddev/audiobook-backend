@@ -1,4 +1,4 @@
-import { List } from "../../../../db/default";
+import { List } from "../../../../db";
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";

@@ -1,5 +1,4 @@
-import { Schema, Document, Model } from "mongoose";
-import conn from "../conn";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import slugify from "slugify";
 
 export interface IGenre {
@@ -40,4 +39,4 @@ GenreSchema.pre("save", async function () {
   this.thumbnailUrl = `${process.env.PUBLIC_URL}${this.thumbnail}`
 })
 
-export const Genre: Model<IGenreGenre> = conn.model<IGenreGenre>("Genre", GenreSchema);
+export const Genre: Model<IGenreGenre> = mongoose.model<IGenreGenre>("Genre", GenreSchema);
