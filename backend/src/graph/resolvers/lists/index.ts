@@ -1,15 +1,5 @@
-import gql from "graphql-tag";
-import { readFileSync } from "fs";
-import path from "path";
 import { List } from "db";
-
-export const types = gql(
-    readFileSync(path.join(__dirname, "schema.graphql"), {
-        encoding: "utf-8",
-    })
-);
-
-export const resolvers = {
+export default {
     List: {
         id: (parent: any) => parent.id ?? parent._id,
     },

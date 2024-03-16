@@ -1,15 +1,5 @@
-import gql from "graphql-tag";
-import { readFileSync } from "fs";
-import path from "path";
 import { Album, Author, Genre, List, Track } from "db";
-
-export const types = gql(
-    readFileSync(path.join(__dirname, "schema.graphql"), {
-        encoding: "utf-8",
-    })
-);
-
-export const resolvers = {
+export default {
     Track: {
         id: (parent: any) => parent.id ?? parent._id,
     },
