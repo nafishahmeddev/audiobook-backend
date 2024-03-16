@@ -47,7 +47,7 @@ const TrackSchema: Schema<ITrackModel> = new Schema<ITrackModel>(
       type: mongoose.Types.ObjectId,
       ref: Album
     },
-    position: Number,
+    position: { type: Number, default: 0 },
     type: { type: String, enum: Object.values(TRACK_TYPE_ENUM) }
   },
   {
