@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "nodemon",
-    "start": "node dist/index.js",
+    "start": "NODE_PATH=dist/ node dist/index.js",
     "build": "tsc"
   },
   "keywords": [],
