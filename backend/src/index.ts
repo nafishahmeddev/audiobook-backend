@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import path from "path";
 import { initDatabase } from 'db';
+import { init } from 'graph';
+import { expressMiddleware } from '@apollo/server/express4';
 dotenv.config({ path: __dirname + "/../.env" });
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -18,8 +20,13 @@ app.get('/', (req: Request, res: Response) => {
 });
 async function boot() {
   await initDatabase();
-  const router = await (await (import("./router"))).default;
-  app.use(router);
+  const gServer = await init();
+  app.use(
+    '/graphql',
+    expressMiddleware(gServer),
+  );
+  // const router = await (await (import("./router"))).default;
+  // app.use(router);
 }
 
 boot().then(() => {

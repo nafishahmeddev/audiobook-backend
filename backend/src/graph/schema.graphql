@@ -1,0 +1,90 @@
+scalar Date
+type Admin {
+  _id: String!
+  lastName: String!
+  firstName: String!
+
+  age: Int!
+  country: String!
+  sex: String!
+
+  password: String!
+  email: String!
+
+  emailVerified: Boolean!
+  totalListenedSeconds: Float!
+
+  createdAt: Date!
+  updatedAt: Date!
+
+  accessType: String!
+}
+
+type Author {
+  _id: String!
+  firstName: String!
+  lastName: String!
+  image: String!
+  imageUrl: String
+  slug: String
+  gender: String!
+  description: String!
+  dob: Date!
+  dod: Date!
+}
+
+type Genre {
+  _id: String!
+  name: String!
+  slug: String
+  thumbnail: String!
+  thumbnailUrl: String
+  icon: String!
+}
+
+type List {
+  _id: String!
+  name: String!
+  subtitle: String!
+  thumbnail: String!
+  thumbnailUrl: String
+  icon: String!
+  position: Int!
+  slug: String
+}
+
+type Album {
+  _id: String!
+  title: String!
+  excerpt: String!
+  description: String!
+  slug: String
+  language: String!
+  totalTracks: Int!
+  thumbnail: String!
+  thumbnailUrl: String
+  duration: String!
+  authors: [Author]!
+  genres: [Genre]!
+  lists: [List]!
+  type: String!
+}
+type Track {
+  _id: String!
+  title: String!
+  excerpt: String!
+  description: String!
+  slug: String
+  language: String!
+  thumbnail: String!
+  thumbnailUrl: String
+  audio: String!
+  audioUrl: String
+  duration: String!
+  authors: [Author!]!
+  genres: [Genre!]!
+  lists: [List!]!
+  album: [Album!]!
+  position: Int!
+  type: String!
+}

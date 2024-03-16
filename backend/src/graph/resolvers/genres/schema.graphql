@@ -1,0 +1,15 @@
+type Query {
+  genre(_id: String!): Genre
+  genres: [Genre]
+}
+
+type Mutation {
+  createGenre(name: String!, thumbnail: String!, icon: String!): Genre
+  deleteGenre(_id: String!): Boolean
+  updateGenre(
+    _id: String!
+    name: String
+    thumbnail: String
+    icon: String
+  ): Genre
+}

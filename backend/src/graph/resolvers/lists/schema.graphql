@@ -1,0 +1,23 @@
+type Query {
+  list(_id: String!): List
+  lists: [List]
+}
+
+type Mutation {
+  createList(
+    name: String!
+    subtitle: String!
+    thumbnail: String!
+    icon: String!
+    position: Int!
+  ): List
+  deleteList(_id: String!): Boolean
+  updateList(
+    _id: String!
+    name: String
+    subtitle: String
+    thumbnail: String
+    icon: String
+    position: Int
+  ): List
+}

@@ -1,0 +1,39 @@
+type Query {
+  track(_id: String!): Track
+  tracks: [Track]
+}
+
+type Mutation {
+  createTrack(
+    title: String!
+    excerpt: String!
+    description: String!
+    language: String!
+    thumbnail: String!
+    audio: String!
+    duration: String!
+    authors: [String]!
+    genres: [String]!
+    lists: [String]!
+    album: [String]!
+    position: Int!
+    type: String!
+  ): Track
+  deleteTrack(_id: String!): Boolean
+  updateTrack(
+    _id: String!
+    title: String!
+    excerpt: String!
+    description: String!
+    language: String!
+    thumbnail: String!
+    audio: String!
+    duration: String!
+    authors: [String]!
+    genres: [String]!
+    lists: [String]!
+    album: [String]!
+    position: Int!
+    type: String!
+  ): Track
+}

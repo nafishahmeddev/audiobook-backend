@@ -1,0 +1,36 @@
+type Query {
+  album(_id: String!): Album
+  albums: [Album]
+}
+
+type Mutation {
+  createAlbum(
+    title: String!
+    excerpt: String!
+    description: String!
+    language: String!
+    totalTracks: Int!
+    thumbnail: String!
+    duration: String!
+    authors: [String]!
+    genres: [String]!
+    lists: [String]!
+    type: String!
+  ): Album
+  deleteAlbum(_id: String!): Boolean
+  updateAlbum(
+    _id: String!
+    title: String
+    excerpt: String
+    description: String
+    language: String
+    totalTracks: Int
+    thumbnail: String
+    thumbnailUrl: String
+    duration: String
+    authors: [String]
+    genres: [String]
+    lists: [String]
+    type: String
+  ): Album
+}
