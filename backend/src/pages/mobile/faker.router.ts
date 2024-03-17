@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { Album, Author, Genre, List, Track } from "../../db";
+import { Admin, Album, Author, Genre, List, Track } from "../../db";
 import ResponseHelper from "../../helpers/ResponseHelper";
 import { faker } from '@faker-js/faker';
 import axios from "axios";
 import fs from "fs";
 import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
 import { exec } from "child_process";
+import bcrypt from "bcrypt";
 
 
 const router = Router({ mergeParams: true });
@@ -142,6 +143,28 @@ router.patch("/generate", async (req: any, res: any) => {
         code: 200,
         message: "Successful",
     }));
+})
+
+router.get("/admin/generate", async (req: any, res: any) => {
+    const admin = await Admin.findOneAndUpdate({
+        email: "admin@nafish.me",
+    }, {
+        $set: {
+            email: "admin@nafish.me",
+            password: bcrypt.hashSync("12345678", 12),
+            accessType: "ADMIN"
+        }
+    }, {
+        upsert: true,
+        new: true
+    })
+    return res.json({
+        resultCode: 200,
+        message: "Cool",
+        result: {
+            admin
+        }
+    })
 })
 
 export default router;

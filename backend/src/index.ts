@@ -29,8 +29,8 @@ async function boot() {
       }
     }),
   );
-  // const router = await (await (import("./router"))).default;
-  // app.use(router);
+  const router = await (await (import("./router"))).default;
+  app.use(router);
 }
 
 boot().then(() => {
