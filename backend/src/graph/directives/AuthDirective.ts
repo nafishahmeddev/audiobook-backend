@@ -42,7 +42,6 @@ function AuthDirective(
             if (requires) {
               const { resolve = defaultFieldResolver } = fieldConfig
               fieldConfig.resolve = function (source, args, context, info) {
-                console.log(context);
                 const user = getUserFn(context.headers.authorization)
                 if (!user.hasRole(requires)) {
                   throw new Error('not authorized')
