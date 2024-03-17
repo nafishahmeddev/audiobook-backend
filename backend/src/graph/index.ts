@@ -32,7 +32,7 @@ export const init = async () => {
     const typeDefs = mergeTypeDefs([...types, authDirectiveTypeDefs]);
     const server = new ApolloServer({
         schema: authDirectiveTransformer(
-            makeExecutableSchema({
+            buildSubgraphSchema({
                 typeDefs: typeDefs,
                 resolvers: mergeResolvers(resolvers) as any,
 
