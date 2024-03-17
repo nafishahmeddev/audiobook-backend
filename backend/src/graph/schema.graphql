@@ -24,7 +24,7 @@ type Author {
   _id: String!
   firstName: String!
   lastName: String!
-  image: String!
+  image: String
   imageUrl: String
   slug: String
   gender: String!
@@ -46,7 +46,7 @@ type List {
   _id: String!
   name: String!
   subtitle: String!
-  thumbnail: String!
+  thumbnail: String
   thumbnailUrl: String
   icon: String!
   position: Int!
