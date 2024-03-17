@@ -32,7 +32,7 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     description: String,
     slug: { type: String, unique: true },
     language: String,
-    totalTracks: Number,
+    totalTracks: { type: Number, default: 0 },
     thumbnail: String,
     thumbnailUrl: String,
     duration: Number,

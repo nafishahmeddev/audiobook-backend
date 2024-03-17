@@ -60,7 +60,7 @@ type Album {
   description: String!
   slug: String
   language: String!
-  totalTracks: Int
+  totalTracks: Int!
   thumbnail: String!
   thumbnailUrl: String
   duration: String!
