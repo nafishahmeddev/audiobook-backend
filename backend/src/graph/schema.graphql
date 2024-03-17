@@ -37,7 +37,7 @@ type Genre {
   _id: String!
   name: String!
   slug: String
-  thumbnail: String!
+  thumbnail: String
   thumbnailUrl: String
   icon: String!
 }
