@@ -1,8 +1,5 @@
 import { Album, Author, Genre, List, Track } from "db";
 export default {
-    Track: {
-        id: (parent: any) => parent.id ?? parent._id,
-    },
     Query: {
         async track(_: any, { _id }: any) {
             return await Track.findOne({ _id }, null, {

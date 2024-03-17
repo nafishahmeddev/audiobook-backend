@@ -1,6 +1,6 @@
 type Query {
-  album(_id: String!): Album
-  albums: [Album]
+  album(_id: String!): Album @auth(requires: ADMIN)
+  albums: [Album!]! @auth(requires: ADMIN)
 }
 
 type Mutation {

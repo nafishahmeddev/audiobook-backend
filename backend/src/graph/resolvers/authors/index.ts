@@ -1,8 +1,5 @@
 import { Author } from "db";
 export default {
-    Author: {
-        id: (parent: any) => parent.id ?? parent._id,
-    },
     Query: {
         async author(_: any, { _id }: any) {
             return await Author.findOne({ _id }, null, {});

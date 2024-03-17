@@ -1,8 +1,5 @@
 import { List } from "db";
 export default {
-    List: {
-        id: (parent: any) => parent.id ?? parent._id,
-    },
     Query: {
         async list(_: any, { _id }: any) {
             return await List.findOne({ _id }, null, {});

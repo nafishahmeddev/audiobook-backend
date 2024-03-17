@@ -23,7 +23,11 @@ async function boot() {
   const gServer = await init();
   app.use(
     '/graphql',
-    expressMiddleware(gServer),
+    expressMiddleware(gServer, {
+      context: async ({ req }) => {
+        return { headers: req.headers };
+      }
+    }),
   );
   // const router = await (await (import("./router"))).default;
   // app.use(router);

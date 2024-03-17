@@ -1,8 +1,5 @@
 import { Genre, List } from "db";
 export default {
-    Genre: {
-        id: (parent: any) => parent.id ?? parent._id,
-    },
     Query: {
         async genre(_: any, { _id }: any) {
             return await Genre.findOne({ _id }, null, {});
