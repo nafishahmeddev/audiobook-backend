@@ -7,7 +7,7 @@ export interface IList {
   thumbnail: string,
   thumbnailUrl?: string,
   icon: string,
-  position: string,
+  position: number,
   slug: string
 }
 
@@ -22,7 +22,7 @@ const ListSchema: Schema<IListList> = new Schema<IListList>(
     thumbnail: String,
     thumbnailUrl: String,
     icon: String,
-    position: String,
+    position: { type: Number, default: 0 },
     slug: { type: String, unique: true },
   },
   {

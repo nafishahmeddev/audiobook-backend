@@ -39,7 +39,7 @@ type Genre {
   slug: String
   thumbnail: String
   thumbnailUrl: String
-  icon: String!
+  icon: String
 }
 
 type List {
@@ -48,7 +48,7 @@ type List {
   subtitle: String!
   thumbnail: String
   thumbnailUrl: String
-  icon: String!
+  icon: String
   position: Int!
   slug: String
 }
