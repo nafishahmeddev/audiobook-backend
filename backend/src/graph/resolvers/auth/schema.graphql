@@ -1,0 +1,13 @@
+type AuthPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: Admin!
+}
+type Query {
+  track(_id: String!): Track
+  tracks: [Track]
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthPayload
+}

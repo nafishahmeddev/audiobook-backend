@@ -84,7 +84,7 @@ type Track {
   authors: [Author!]!
   genres: [Genre!]!
   lists: [List!]!
-  album: [Album!]!
+  album: Album!
   position: Int!
   type: String!
 }
