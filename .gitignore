@@ -22,3 +22,4 @@
 /website/vite.config.js.timestamp-*
 /website/vite.config.ts.timestamp-*
 
+/assets/*
