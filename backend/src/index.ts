@@ -23,8 +23,6 @@ async function boot() {
 
 boot().then(() => {
   app.use("/public", express.static(path.join(process.env.ASSETS_PATH || "", "public")));
-  app.use(express.static(path.join(process.env.FRONTEND_PATH || "dist")));
-  app.use("*", express.static(path.join(process.env.FRONTEND_PATH || "", "dist", "index.html")));
   app.listen(port, () => {
     console.log(`Server is Fire at http://localhost:${port}`);
   });
