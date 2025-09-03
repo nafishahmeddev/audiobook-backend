@@ -1,11 +1,11 @@
 import chalk from "chalk";
-import moment from "moment";
+import dayjs from "dayjs";
 export const PayloadDebugger = (req: any, res: any, next: any) => {
     if (req.id) {
         return next();
     }
-    req.time = moment();
-    req.id = moment().unix();
+    req.time = dayjs();
+    req.id = dayjs().unix();
 
     const resDotSendInterceptor = (res: any, send: any) => (content: any) => {
         res.contentBody = content;
@@ -20,7 +20,7 @@ export const PayloadDebugger = (req: any, res: any, next: any) => {
     console.log(chalk.blue("BODY  "), ": ", req.body);
     res.send = resDotSendInterceptor(res, res.send);
     res.on("finish", () => {
-        console.log(chalk.blue(`RESPONSE`), `${moment.duration(moment().diff(req.time)).asMilliseconds()}ms`);
+        console.log(chalk.blue(`RESPONSE`), `${dayjs().diff(req.time, "milliseconds")}ms`);
         let resBody: any = null;
         try {
             resBody = JSON.parse(res.contentBody);

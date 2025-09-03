@@ -139,24 +139,18 @@ router.patch("/generate", async (req: any, res: any) => {
     track.thumbnail = filepath.replace(process.env.ASSETS_PATH ?? "", "");
 
     const sourcePath = `${process.env.PROJECT_PATH}/dummy/audio/test.mp3`;
-    const outPath = `${process.env.ASSETS_PATH}/public/audios/streams/${track._id.toString()}`;
-    const m3u8Path = `${outPath}/index.m3u8`;
-
-    fs.mkdirSync(outPath, { recursive: true });
+    const audioPath = `${process.env.ASSETS_PATH}/public/audios/${track._id.toString()}.aac`;
 
     try {
       await new Promise((resolve, reject) => {
-        ffmpeg(sourcePath, { timeout: 432000 })
+        ffmpeg(sourcePath, { timeout: 432000 }) // timeout in ms for ffmpeg processing
           .addOptions([
-            "-map 0:a",
-            "-c:a aac",
-            "-b:a 128k",
-            "-f hls",
-            "-hls_time 10",
-            "-hls_list_size 0",
-            `-hls_segment_filename ${outPath}/chunk%d.ts`,
+            "-map 0:a", // select all audio streams from the input
+            "-c:a aac", // encode audio using the AAC codec
+            "-b:a 128k", // set audio bitrate to 128 kbps
+            "-f adts" // output format: ADTS (Audio Data Transport Stream)
           ])
-          .saveToFile(m3u8Path)
+          .saveToFile(audioPath)
           .on("error", (error) => {
             console.error(`exec error: ${error.message}`);
             reject(false);
@@ -168,22 +162,9 @@ router.patch("/generate", async (req: any, res: any) => {
             console.log(`stdout: ${stdout}`);
             resolve(true);
           });
-        //   exec(
-        //     `ffmpeg -i ${sourcepath}  -c:a aac -b:a 192k  ${audiopath}`,
-        //     (error, stdout, stderr) => {
-        //       if (error) {
-        //         console.error(`exec error: ${error}`);
-        //         reject(false);
-        //         return;
-        //       }
-        //       console.log(`stdout: ${stdout}`);
-        //       console.error(`stderr: ${stderr}`);
-        //       resolve(true);
-        //     }
-        //   );
       });
 
-      track.audio = m3u8Path.replace(process.env.ASSETS_PATH ?? "", "");
+      track.audio = audioPath.replace(process.env.ASSETS_PATH || "", "");
       await track.save();
       console.log(`Generated track ${n}....`);
     } catch (err) {
