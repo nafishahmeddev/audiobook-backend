@@ -6,9 +6,9 @@ import { List } from "./List";
 import slugify from "slugify";
 
 export enum AlbumType {
-  BOOK = "BOOK",
-  PODCAST = "PODCAST",
-  ALBUM = "ALBUM"
+  BOOK = "Book",
+  PODCAST = "Podcast",
+  ALBUM = "Album"
 }
 
 export interface IAlbum {

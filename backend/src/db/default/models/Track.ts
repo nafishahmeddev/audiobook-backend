@@ -7,9 +7,9 @@ import { Author } from "./Author";
 import { Genre } from "./Genre";
 
 export enum TrackType {
-  EPISODE = "EPISODE",
-  CHAPTER = "CHAPTER",
-  SONG = "SONG"
+  EPISODE = "Episode",
+  CHAPTER = "Chapter",
+  SONG = "Song"
 }
 
 export interface ITrack {
