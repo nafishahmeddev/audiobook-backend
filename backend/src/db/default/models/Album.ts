@@ -3,8 +3,13 @@ import conn from "../conn";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
 import { List } from "./List";
-import { ALBUM_TYPE_ENUM } from "../../../enums/album";
 import slugify from "slugify";
+
+export enum AlbumType {
+  BOOK = "BOOK",
+  PODCAST = "PODCAST",
+  ALBUM = "ALBUM"
+}
 
 export interface IAlbum {
   title: string,
@@ -19,7 +24,7 @@ export interface IAlbum {
   authors: mongoose.ObjectId[],
   genres: mongoose.ObjectId[],
   lists: mongoose.ObjectId[],
-  type: "BOOK" | "PODCAST" | "ALBUM"
+  type: AlbumType
 }
 
 export interface IAlbumModel extends IAlbum, Document {
@@ -40,7 +45,7 @@ const AlbumSchema: Schema<IAlbumModel> = new Schema<IAlbumModel>(
     authors: { type: [mongoose.Types.ObjectId], ref: Author },
     genres: { type: [mongoose.Types.ObjectId], ref: Genre },
     lists: { type: [mongoose.Types.ObjectId], ref: List },
-    type: { type: String, enum: Object.values(ALBUM_TYPE_ENUM) }
+    type: { type: String, enum: Object.values(AlbumType) }
   },
   {
     timestamps: true,

@@ -4,9 +4,10 @@ import ResponseHelper from "../../helpers/ResponseHelper";
 import { faker } from "@faker-js/faker";
 import axios from "axios";
 import fs from "fs";
-import { ALBUM_TYPE_ENUM, TRACK_TYPE_ENUM } from "../../enums/album";
 import { exec } from "child_process";
 import ffmpeg from "fluent-ffmpeg";
+import { AlbumType } from "db/default/models/Album";
+import { TrackType } from "db/default/models/Track";
 
 const router = Router({ mergeParams: true });
 function art(): string {
@@ -110,7 +111,7 @@ router.patch("/generate", async (req: any, res: any) => {
       authors: await Author.aggregate([{ $sample: { size: 1 } }]),
       genres: await Genre.aggregate([{ $sample: { size: 1 } }]),
       lists: await List.aggregate([{ $sample: { size: 1 } }]),
-      type: ALBUM_TYPE_ENUM.ALBUM,
+      type: AlbumType.ALBUM,
     });
     const filepath = `${process.env.ASSETS_PATH
       }/public/images/album-${album._id.toString()}-${Date.now()}.jpg`;
@@ -131,7 +132,7 @@ router.patch("/generate", async (req: any, res: any) => {
       authors: await Author.aggregate([{ $sample: { size: 2 } }]),
       genres: await Genre.aggregate([{ $sample: { size: 2 } }]),
       lists: await List.aggregate([{ $sample: { size: 2 } }]),
-      type: TRACK_TYPE_ENUM.SONG,
+      type: TrackType.SONG,
       album: (await Album.aggregate([{ $sample: { size: 1 } }]))[0],
     });
     const filepath = `${process.env.ASSETS_PATH}/public/images/track-${track._id.toString()}-${Date.now()}.jpg`;
