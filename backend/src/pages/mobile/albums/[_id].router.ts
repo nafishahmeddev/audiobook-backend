@@ -5,7 +5,7 @@ import ResponseHelper from "../../../helpers/ResponseHelper";
 const router = Router({ mergeParams: true });
 
 router.get("/", async (req: any, res: any) => {
-    const albumId = req.params.albumId;
+    const albumId = req.params._id;
     const album = (await Album.findOne({ _id: albumId })
         .populate([
             { path: "authors", model: Author },
@@ -24,7 +24,7 @@ router.get("/", async (req: any, res: any) => {
 })
 
 router.get("/tracks", async (req: any, res: any) => {
-    const albumId = req.params.albumId;
+    const albumId = req.params._id;
     const tracks = await Track.find({ album: albumId }, { thumbnail: 0 })
         .populate([
             { path: "authors", model: Author, select: "-image" },
